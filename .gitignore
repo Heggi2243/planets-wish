@@ -1,0 +1,13 @@
+# 忽略敏感資訊
+.env
+
+# 忽略本地IDE/系統檔案
+.DS_Store
+*.log
+
+# 忽略PHP Cache
+vendor/
+
+
+config
+node_modules

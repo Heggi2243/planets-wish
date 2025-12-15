@@ -1,0 +1,24 @@
+{
+  "name": "planets-wish",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Heggi2243/planets-wish.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Heggi2243/planets-wish/issues"
+  },
+  "homepage": "https://github.com/Heggi2243/planets-wish#readme",
+  "devDependencies": {
+    "tailwindcss": "^3.4.19"
+  }
+}

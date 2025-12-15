@@ -1,0 +1,91 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+    background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
+    overflow-x: hidden;
+    min-height: 100vh;
+}
+
+/* 生成星空背景 */
+.stars, .twinkling {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    width: 100%; height: 100%;
+    display: block;
+}
+
+/* 簡單的星星背景圖案 */
+.stars {
+    background: #000 url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/1231630/stars.png') repeat top center;
+    z-index: -2;
+}
+
+.twinkling {
+    background: transparent url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/1231630/twinkling.png') repeat top center;
+    z-index: -1;
+    animation: move-twink-back 200s linear infinite;
+}
+
+@keyframes move-twink-back {
+    from {background-position:0 0;}
+    to {background-position:-10000px 5000px;}
+}
+
+/* 傳送門光暈效果 */
+.portal-glow {
+    box-shadow: 0 0 60px 30px rgba(126, 34, 206, 0.4), inset 0 0 40px 20px rgba(0, 240, 255, 0.2);
+    transition: all 0.5s ease;
+}
+
+.portal-glow:hover {
+    box-shadow: 0 0 80px 40px rgba(126, 34, 206, 0.6), inset 0 0 50px 25px rgba(0, 240, 255, 0.4);
+    transform: scale(1.05);
+    cursor: pointer;
+}
+
+/* 隱藏卷軸但保留滾動功能 */
+::-webkit-scrollbar {
+    width: 8px;
+}
+::-webkit-scrollbar-track {
+    background: #0f172a; 
+}
+::-webkit-scrollbar-thumb {
+    background: #334155; 
+    border-radius: 4px;
+}
+
+/*=====================================*/
+
+/* 玻璃擬態面板 */
+.glass-panel {
+    background: rgba(17, 24, 39, 0.7);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 40px rgba(0, 242, 255, 0.05);
+}
+
+/* 輸入框樣式 */
+.sci-fi-input {
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(0, 242, 255, 0.3);
+    color: #00f2ff;
+    transition: all 0.3s ease;
+}
+.sci-fi-input:focus {
+    outline: none;
+    border-color: #00f2ff;
+    box-shadow: 0 0 15px rgba(0, 242, 255, 0.3);
+    background: rgba(0, 0, 0, 0.6);
+}
+
+/* 輸入框 Placeholder 顏色 */
+.sci-fi-input::placeholder {
+    color: rgba(0, 242, 255, 0.3);
+}
+
+/* 隱藏滾動條 */
+::-webkit-scrollbar { width: 0px; }
