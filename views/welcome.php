@@ -160,7 +160,7 @@
 
             try {
                 //傳到後端
-                const response = await fetch('../controllers/AuthController.php?action=login',{
+                const response = await fetch('/controllers/AuthController.php?action=login',{
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json', 
@@ -174,7 +174,7 @@
                 const result = await response.json();
 
                 if(result.success) {
-                    windows.location.href = 'wishCreate.php';
+                    window.location.href = 'wishCreate.php';
                 }else{
                     alert(result.message || '登入失敗，請檢查帳號密碼');
                 }
@@ -222,7 +222,7 @@
             btn.disabled = true;
 
             try {
-                const response = await fetch('../controllers/AuthController.php?action=register',{
+                const response = await fetch('/controllers/AuthController.php?action=register',{
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json', 
