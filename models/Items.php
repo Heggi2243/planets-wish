@@ -1,5 +1,5 @@
 <?php
-class Item
+class Items
 {
     private $db;
     

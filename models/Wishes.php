@@ -1,5 +1,5 @@
 <?php
-class Wish
+class Wishes
 {
     private $db;
     

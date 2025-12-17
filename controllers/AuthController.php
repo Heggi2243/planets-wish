@@ -2,7 +2,7 @@
 
 require_once __DIR__ . '/../config.php';
 require_once '../models/Database.php';
-require_once '../models/User.php';
+require_once '../models/Users.php';
 
 // 設定json回應
 header('Content-Type: application/json');
@@ -11,7 +11,7 @@ header('Content-Type: application/json');
 $action = $_GET['action'] ?? '';
 $input = json_decode(file_get_contents('php://input'), true);
 
-$userModel = new User();
+$userModel = new Users();
 
 // ======= 登入 ========
 if ($action === 'login') {

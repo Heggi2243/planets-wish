@@ -29,4 +29,10 @@ class Database
         
         return self::$pdo;
     }
+    
+    //讓實例也能用
+    public function getConnection()
+    {
+        return self::connect();
+    }
 }
