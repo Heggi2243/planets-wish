@@ -43,24 +43,24 @@ class Planets
 
         // 計算各項屬性(0-100的原始分數)
 
-        // 力=質量開根號*40
-        $powerRaw = min(100, sqrt($mass) * 40); 
+        // 力=質量開根號*60
+        $powerRaw = min(100, sqrt($mass) * 60); 
 
         // 敏=對數級距
         // log10(1)=0 => 120分; log10(10)=1 => 90分; log10(100)=2 => 60分
         if ($period > 0) {
             $logPeriod = log10($period);
-            $dexRaw = 120 - (30 * $logPeriod);
+            $dexRaw = 100 - (30 * $logPeriod);
         } else {
             $dexRaw = 0;
         }
         $dexRaw = min(100, max(0, $dexRaw));
 
-        // 幸=溫度/25
-        $luckRaw = min(100, $temperature / 25);
+        // 幸=溫度/10
+        $luckRaw = min(100, $temperature / 10);
 
-        // 智=半徑*50
-        $intelRaw = min(100, $radius * 50);
+        // 智=半徑*100
+        $intelRaw = min(100, $radius * 100);
 
         // 將 0-100 的分數轉換為 0-3 的點數
         // 使用線性映射: (rawScore / 100) * 3
@@ -158,7 +158,7 @@ class Planets
             $stats['luck_stat'] ?? 0,
             $stats['intel_stat'] ?? 0,
             $stats['distance_ly'] ?? 0,
-            $$description ?? null
+            $description ?? null
         ]);
     }
 

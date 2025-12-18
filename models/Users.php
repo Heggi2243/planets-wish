@@ -30,21 +30,45 @@ class Users
     
     /**
      * 註冊新會員
+     * 密碼加密、產生email驗證碼
      */
     public function register($username, $password, $email)
-    {
+    {   
+        //產生驗證Token(64字元隨機字串)
+        $verificationToken = bin2hex(random_bytes(32));
+        //24小時過期
+        $tokenExpiresAt = date('Y-m-d H:i:s', strtotime('+24 hours'));
+
+        //密碼hash
         $passwordHash = password_hash($password, PASSWORD_DEFAULT);
         
-        $sql = "INSERT INTO users (username, password_hash, email, coins, created_at) 
-                VALUES (?, ?, ?, 0, NOW())";
+        $sql = "INSERT INTO users (username, password_hash, email, 
+                email_verified, verification_token, token_expires_at, created_at) 
+                VALUES (?, ?, ?, 0, ?,?, NOW())";
+
         $stmt = $this->db->prepare($sql);
         
         try {
-            $stmt->execute([$username, $passwordHash, $email]);
-            return $this->db->lastInsertId();
+            $stmt->execute([$username, $passwordHash, $email, $verificationToken, $tokenExpiresAt]);
+            return [
+                'user_id' => $this->db->lastInsertId(),
+                'verification_token' => $verificationToken
+            ];
         } catch (PDOException $e) {
             return false;
         }
+    }
+
+     /**
+     * 驗證email token
+     */
+    public function verifyEmail($token)
+    {
+        /// 尋找目前持有email驗證碼，但是還沒驗證的人
+        $sql = "SELECT id, username, email FROM users
+                WHERE verification_token = ?
+                AND token_expires_at > NOW() 
+                AND email_verified = 0";
     }
     
     /**

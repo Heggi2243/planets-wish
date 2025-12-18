@@ -90,10 +90,20 @@ function fetchPlanetsFromAPI($apiKey, $params)
 
 // 要抓的行星
 $queries = [
-    // ['min_mass' => 0.001, 'max_mass' => 1],
     // ['min_mass' => 1, 'max_mass' => 2],
-    // ['min_radius' => 0.01, 'max_radius' => 1],
-    ['max_mass' => 0.05, 'max_radius' => 0.5],
+    ['min_radius' => 0.01, 'max_radius' => 1],
+    // ['max_mass' => 0.05, 'max_radius' => 0.5],
+    //  ['min_radius' => 0.5],
+    // ['min_radius' => 1.0],
+    // ['min_radius' => 1.5],
+    
+    // 測試高溫
+    // ['min_temperature' => 500],
+    // ['min_temperature' => 1000],
+    // ['min_temperature' => 1500],
+    
+    // 測試組合
+    // ['min_radius' => 0.3, 'max_mass' => 0.1],   //智慧
 ];
 
 $allPlanets = [];
