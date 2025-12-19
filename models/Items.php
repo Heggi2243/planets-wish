@@ -1,4 +1,7 @@
 <?php
+/**
+ * 商店商品
+ */
 class Items
 {
     private $db;

@@ -3,6 +3,7 @@
 require_once __DIR__ . '/../config.php';
 require_once '../models/Database.php';
 require_once '../models/Users.php';
+require_once '../models/EmailService.php';
 
 // 設定json回應
 header('Content-Type: application/json');
@@ -12,6 +13,7 @@ $action = $_GET['action'] ?? '';
 $input = json_decode(file_get_contents('php://input'), true);
 
 $userModel = new Users();
+$emailService = new EmailService();
 
 // ======= 登入 ========
 if ($action === 'login') {
@@ -115,6 +117,57 @@ if ($action === 'register') {
             'message' => '註冊失敗，請稍後再試'
         ]);
     }
+    exit;
+}
+
+// ========== 重新發送驗證信 ========== 
+if ($action === 'resend-verification') {
+    $email = $input['email'] ?? '';
+    
+    if (empty($email)) {
+        echo json_encode([
+            'success' => false,
+            'message' => '請提供email'
+        ]);
+        exit;
+    }
+    
+    $result = $userModel->resendVerification($email);
+    
+    if ($result) {
+        $emailSent = $emailService->sendVerificationEmail(
+            $result['email'],
+            $result['username'],
+            $result['verification_token']
+        );
+        
+        if ($emailSent) {
+            echo json_encode([
+                'success' => true,
+                'message' => '驗證信已重新發送'
+            ]);
+        } else {
+            echo json_encode([
+                'success' => false,
+                'message' => '驗證信發送失敗，請稍後再試'
+            ]);
+        }
+    } else {
+        echo json_encode([
+            'success' => false,
+            'message' => '找不到此Email，或已經驗證過了'
+        ]);
+    }
+    exit;
+}
+
+// ========== 登出 ========== 
+if ($action === 'logout') {
+    session_destroy();
+    echo json_encode([
+        'success' => true,
+        'message' => '登出成功'
+    ]);
     exit;
 }
 

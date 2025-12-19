@@ -1,4 +1,7 @@
 <?php
+/**
+ * 背包(玩家持有道具)
+ */
 class Inventory
 {
     private $db;
