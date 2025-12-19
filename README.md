@@ -21,6 +21,7 @@
 - **架構**：MVC 模式
 - **外部 API**：[API Ninjas - Planets API](https://api-ninjas.com/api/planets)
 - **CSS 框架**：Tailwind CSS
+- **其他工具**：PHPMailer
 
 ## 📁 專案結構
 
@@ -32,20 +33,21 @@ planets-wish/
 │   └── WishController.php
 ├── models/               # 模型
 │   ├── Database.php
-│   ├── Inventory.php     # 背包（玩家持有道具）
-│   ├── User.php          # 會員
+│   ├── Emailservice.php  #處理email相關功能
+│   ├── Inventory.php     # 背包(玩家持有道具)
+│   ├── Items.php         # 商店商品
 │   ├── Planets.php       # 行星
-│   ├── Item.php          # 遊戲道具
-│   ├── Inventory.php     # 背包
+│   ├── Users.php         # 會員
 │   └── Wish.php          # 許願紀錄
 ├── views/                # 視圖
-│   ├── home.php
-│   ├── wishes.php
-│   └── create_wish.php
+│   ├── welcome.php
+│   └── wishCreate.php
 ├── css/
 │   └── input.css
 ├── src/
 │   └── output.css        # Tailwind編譯後的CSS
+├── lib/
+│   └── PHPMailer         # email發送工具
 ├── index.php             # 入口檔案
 ├── config.php            # 設定檔
 ├── .env                  # 環境變數
