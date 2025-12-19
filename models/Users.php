@@ -1,4 +1,5 @@
 <?php
+/* Users model */
 class Users
 {
     private $db;
@@ -44,7 +45,7 @@ class Users
         
         $sql = "INSERT INTO users (username, password_hash, email, 
                 email_verified, verification_token, token_expires_at, created_at) 
-                VALUES (?, ?, ?, 0, ?,?, NOW())";
+                VALUES (?, ?, ?, 0, ?, ?, NOW())";
 
         $stmt = $this->db->prepare($sql);
         
@@ -71,10 +72,10 @@ class Users
                 AND email_verified = 0";
 
         $stmt = $this->db->prepare($sql);
-        $stmt->excute([$token]);
+        $stmt->execute([$token]);
         $user = $stmt->fetch();
 
-        if (!user) {
+        if (!$user) {
             return [
                 'success' => false,
                 'message' => '驗證連結已過期'
@@ -102,8 +103,6 @@ class Users
             'success' => false,
             'message' => '驗證失敗'
         ];
-
-
     }
 
     /**
@@ -130,13 +129,12 @@ class Users
         $updateSql = "UPDATE users
                     SET verification_token = ?, 
                         token_expires_at = ?
-                    WHERE id = ? ";
+                    WHERE id = ?";
         
         $updateStmt = $this->db->prepare($updateSql);
 
-        if($updateStmt->excute([$verificationToken, $tokenExpiresAt, $user['id'] ])) {
+        if ($updateStmt->execute([$verificationToken, $tokenExpiresAt, $user['id']])) {
             return [
-
                 'user_id' => $user['id'],
                 'username' => $user['username'],
                 'email' => $user['email'],
@@ -145,11 +143,8 @@ class Users
         }
 
         return false;
-
     }
 
-
-    
     /**
      * 驗證登入
      */
@@ -169,10 +164,10 @@ class Users
             return [
                 'success' => false,
                 'message' => '請先驗證Email',
-                'needs_verification' => true
+                'needs_verification' => true,
+                'email' => $user['email']  // 回傳email供重新發送使用
             ];
         }
-        
         
         return [
             'success' => true,
@@ -181,8 +176,6 @@ class Users
         ];
     }
 
-
-    
     /**
      * 檢查今天是否已經免費召喚過
      */

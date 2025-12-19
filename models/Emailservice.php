@@ -1,16 +1,14 @@
 <?php
 /**
- * Email Service
+ * EmailService Model
  * 處理所有 Email 相關功能
  */
 
-// 懶得裝composer，手動引入
-require_once __DIR__ . '/../lib/PHPMailer/PHPMailer.php';
-require_once __DIR__ . '/../lib/PHPMailer/SMTP.php';
-require_once __DIR__ . '/../lib/PHPMailer/Exception.php';
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
+
+require_once __DIR__ . '/../vendor/autoload.php';
 
 class EmailService
 {
