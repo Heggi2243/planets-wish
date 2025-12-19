@@ -7,7 +7,7 @@
 
 # 忽略PHP Cache
 vendor/
-
+lib/
 
 config
 node_modules

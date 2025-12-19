@@ -69,7 +69,86 @@ class Users
                 WHERE verification_token = ?
                 AND token_expires_at > NOW() 
                 AND email_verified = 0";
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->excute([$token]);
+        $user = $stmt->fetch();
+
+        if (!user) {
+            return [
+                'success' => false,
+                'message' => '驗證連結已過期'
+            ];
+        }
+
+        // 更新為已驗證
+        $updateSql = "UPDATE users 
+                      SET email_verified = 1, 
+                          verification_token = NULL, 
+                          token_expires_at = NULL 
+                      WHERE id = ?";
+        
+        $updateStmt = $this->db->prepare($updateSql);
+
+        if ($updateStmt->execute([$user['id']])) {
+            return [
+                'success' => true,
+                'message' => 'Email 驗證成功！',
+                'username' => $user['username']
+            ];
+        }
+
+        return [
+            'success' => false,
+            'message' => '驗證失敗'
+        ];
+
+
     }
+
+    /**
+     * 重新發送驗證信
+     */
+    public function resendVerification($email)
+    {
+        // 檢查使用者是否存在&&未驗證
+        $sql = "SELECT id, username, email FROM users
+                WHERE email = ? AND email_verified = 0";
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([$email]);
+        $user = $stmt->fetch();
+
+        if (!$user) {
+            return false;
+        }
+        
+        // 產生新的驗證token
+        $verificationToken = bin2hex(random_bytes(32));
+        $tokenExpiresAt = date('Y-m-d H:i:s', strtotime('+24 hours'));
+
+        $updateSql = "UPDATE users
+                    SET verification_token = ?, 
+                        token_expires_at = ?
+                    WHERE id = ? ";
+        
+        $updateStmt = $this->db->prepare($updateSql);
+
+        if($updateStmt->excute([$verificationToken, $tokenExpiresAt, $user['id'] ])) {
+            return [
+
+                'user_id' => $user['id'],
+                'username' => $user['username'],
+                'email' => $user['email'],
+                'verification_token' => $verificationToken
+            ];
+        }
+
+        return false;
+
+    }
+
+
     
     /**
      * 驗證登入
@@ -77,13 +156,32 @@ class Users
     public function login($username, $password)
     {
         $user = $this->getByUsername($username);
-        
-        if ($user && password_verify($password, $user['password_hash'])) {
-            return $user;
+
+        if (!$user || !password_verify($password, $user['password_hash'])) {
+            return [
+                'success' => false,
+                'message' => '帳號或密碼錯誤'
+            ];
+        }
+
+        // 檢查是否已驗證email
+        if ($user['email_verified'] == 0) {
+            return [
+                'success' => false,
+                'message' => '請先驗證Email',
+                'needs_verification' => true
+            ];
         }
         
-        return false;
+        
+        return [
+            'success' => true,
+            'user_id' => $user['id'],
+            'username' => $user['username']
+        ];
     }
+
+
     
     /**
      * 檢查今天是否已經免費召喚過
