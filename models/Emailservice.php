@@ -18,7 +18,7 @@ class EmailService
 
     public function __construct()
     {
-        $this->mailer = new PHOMailer(true);
+        $this->mailer = new PHPMailer(true);
         $this->configure();
     }
 

@@ -114,151 +114,254 @@
     </footer>
 
     <!-- JavaScript Logic -->
-    <script>
-        // DOM Elements
-        const loginView = document.getElementById('login-view');
-        const registerView = document.getElementById('register-view');
+<script>
+// DOM Elements
+const loginView = document.getElementById('login-view');
+const registerView = document.getElementById('register-view');
 
-        // View Switching Logic
-        function switchView(viewName) {
-            // Add fade-out effect
-            const activeView = viewName === 'login' ? registerView : loginView;
-            const nextView = viewName === 'login' ? loginView : registerView;
+// 取得根目錄
+const BASE_URL = window.location.origin; // http://localhost:8000
 
-            activeView.style.opacity = '0';
+console.log('🔧 DEBUG: BASE_URL =', BASE_URL);
+
+// View Switching Logic
+function switchView(viewName) {
+    const activeView = viewName === 'login' ? registerView : loginView;
+    const nextView = viewName === 'login' ? loginView : registerView;
+
+    activeView.style.opacity = '0';
+    
+    setTimeout(() => {
+        activeView.classList.add('hidden');
+        nextView.classList.remove('hidden');
+        void nextView.offsetWidth;
+        nextView.style.opacity = '0';
+        
+        requestAnimationFrame(() => {
+            nextView.style.transition = 'opacity 0.5s ease';
+            nextView.style.opacity = '1';
+        });
+    }, 300);
+}
+
+// Handle Login
+async function handleLogin(e) {
+    e.preventDefault();
+
+    const form = e.target;
+    const btn = e.target.querySelector('button[type="submit"]');
+    const originalText = btn.innerText;
+    const username = form.querySelector('input[type="text"]').value;
+    const password = form.querySelector('input[type="password"]').value;
+
+    btn.innerText = '認證中...';
+    btn.classList.add('opacity-75', 'cursor-wait');
+    btn.disabled = true;
+
+    const apiUrl = `${BASE_URL}/controllers/AuthController.php?action=login`;
+    console.log('🔧 DEBUG: 登入 URL =', apiUrl);
+
+    try {
+        const response = await fetch(apiUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json', 
+            },
+            body: JSON.stringify({
+                username: username,
+                password: password
+            })
+        });
+
+        console.log('🔧 DEBUG: Response status =', response.status);
+        console.log('🔧 DEBUG: Response headers =', Object.fromEntries(response.headers.entries()));
+
+        // 取得完整回應文字
+        const responseText = await response.text();
+        console.log('🔧 DEBUG: Response text (前 500 字) =', responseText.substring(0, 500));
+        console.log('🔧 DEBUG: Response text (完整) =', responseText);
+
+        // 檢查是否為 JSON
+        const contentType = response.headers.get('content-type');
+        console.log('🔧 DEBUG: Content-Type =', contentType);
+
+        if (!contentType || !contentType.includes('application/json')) {
+            // 在頁面上顯示錯誤
+            alert('❌ 伺服器回應格式錯誤\n\n請按 F12 查看 Console 的詳細錯誤訊息');
             
-            setTimeout(() => {
-                activeView.classList.add('hidden');
-                nextView.classList.remove('hidden');
-                void nextView.offsetWidth;
-                nextView.style.opacity = '0';
-                
-                // Fade-in animation
-                requestAnimationFrame(() => {
-                    nextView.style.transition = 'opacity 0.5s ease';
-                    nextView.style.opacity = '1';
-                });
-            }, 300); // Wait fade out
+            // 建立錯誤顯示區域
+            showDetailedError('登入失敗', responseText);
+            throw new Error('伺服器回應不是 JSON 格式');
         }
 
-        // Handle Login(用ajax)
-        async function handleLogin(e) {
-
-            e.preventDefault();
-
-            const form = e.target;
-            const btn = e.target.querySelector('button[type="submit"]');
-            const originalText = btn.innerText;
-            const username = form.querySelector('input[type="text"]').value;
-            const password = form.querySelector('input[type="password"]').value;
-
-            // Loading state
-            btn.innerText = '認證中...';
-            btn.classList.add('opacity-75', 'cursor-wait');
-            btn.disabled = true;
-
-
-            try {
-                //傳到後端
-                const response = await fetch('/controllers/AuthController.php?action=login',{
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json', 
-                    },
-                    body: JSON.stringify({
-                        username: username,
-                        password: password
-                    })
-                });
-
-                const result = await response.json();
-
-                if(result.success) {
-                    window.location.href = 'wishCreate.php';
-                }else{
-                    alert(result.message || '登入失敗，請檢查帳號密碼');
-                }
-
-            } catch (error) {
-                console.log('錯誤:', error);
-                alert('系統錯誤，請稍後再試');
-
-            } finally {
-                btn.innerText = originalText;
-                btn.classList.remove('opacity-75', 'cursor-wait');
-                btn.disabled = false;
-            }
-
+        // 解析 JSON
+        let result;
+        try {
+            result = JSON.parse(responseText);
+            console.log('🔧 DEBUG: Parsed result =', result);
+        } catch (parseError) {
+            console.error('❌ JSON 解析失敗:', parseError);
+            console.error('❌ 原始內容:', responseText);
+            showDetailedError('JSON 解析失敗', responseText);
+            throw parseError;
         }
 
-        // Handle Register
-        async function handleRegister(e) {
-
-            e.preventDefault();
-
-            const form = e.target;
-            const btn = form.querySelector('button[type="submit"]');
-            const originalText = btn.innerText;
-
-            const inputs = form.querySelectorAll('input');
-            const username = inputs[0].value;
-            const email = inputs[1].value;
-            const password = inputs[2].value;
-            const confirmPassword = inputs[3].value;
-
-            // 前端先驗證
-            if (password !== confirmPassword) {
-                alert('兩次輸入的密碼不一致！');
-                return;
-            }
-
-            if (password.length < 6) {
-                alert('密碼長度至少需要6個字元');
-                return;
-            }
-
-            btn.innerText = '處理中...';
-            btn.classList.add('opacity-75', 'cursor-wait');
-            btn.disabled = true;
-
-            try {
-                const response = await fetch('/controllers/AuthController.php?action=register',{
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json', 
-                    },
-                    body: JSON.stringify({
-                        username: username,
-                        email: email,
-                        password: password
-                    })
-                
-                });
-
-                const result = await response.json();
-
-                if (result.success) {
-                    alert('註冊成功！請登入');
-                    form.reset();
-                    switchView('login');
-                } else {
-                    alert(result.message || '註冊失敗');
-                }
-
-            } catch (error) {
-                console.log('錯誤', error);
-                alert('系統錯誤，請稍後再試');
-
-            } finally {
-                btn.innerText = originalText;
-                btn.classList.remove('opacity-75', 'cursor-wait');
-                btn.disabled = false;
-            }
-
+        if(result.success) {
+            window.location.href = 'wishCreate.php';
+        } else {
+            alert(result.message || '登入失敗，請檢查帳號密碼');
         }
 
-        loginView.style.transition = 'opacity 0.5s ease';
-        registerView.style.transition = 'opacity 0.5s ease';
-    </script>
+    } catch (error) {
+        console.error('❌ 登入錯誤:', error);
+        console.error('❌ 錯誤堆疊:', error.stack);
+    } finally {
+        btn.innerText = originalText;
+        btn.classList.remove('opacity-75', 'cursor-wait');
+        btn.disabled = false;
+    }
+}
+
+// Handle Register
+async function handleRegister(e) {
+    e.preventDefault();
+
+    const form = e.target;
+    const btn = form.querySelector('button[type="submit"]');
+    const originalText = btn.innerText;
+
+    const inputs = form.querySelectorAll('input');
+    const username = inputs[0].value;
+    const email = inputs[1].value;
+    const password = inputs[2].value;
+    const confirmPassword = inputs[3].value;
+
+    // 前端驗證
+    if (password !== confirmPassword) {
+        alert('兩次輸入的密碼不一致！');
+        return;
+    }
+
+    if (password.length < 6) {
+        alert('密碼長度至少需要6個字元');
+        return;
+    }
+
+    btn.innerText = '處理中...';
+    btn.classList.add('opacity-75', 'cursor-wait');
+    btn.disabled = true;
+
+    const apiUrl = `${BASE_URL}/controllers/AuthController.php?action=register`;
+    console.log('🔧 DEBUG: 註冊 URL =', apiUrl);
+
+    try {
+        const response = await fetch(apiUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json', 
+            },
+            body: JSON.stringify({
+                username: username,
+                email: email,
+                password: password
+            })
+        });
+
+        console.log('🔧 DEBUG: Response status =', response.status);
+        console.log('🔧 DEBUG: Response headers =', Object.fromEntries(response.headers.entries()));
+
+        // 取得完整回應文字
+        const responseText = await response.text();
+        console.log('🔧 DEBUG: Response text (前 500 字) =', responseText.substring(0, 500));
+        console.log('🔧 DEBUG: Response text (完整) =', responseText);
+
+        // 檢查是否為 JSON
+        const contentType = response.headers.get('content-type');
+        console.log('🔧 DEBUG: Content-Type =', contentType);
+
+        if (!contentType || !contentType.includes('application/json')) {
+            alert('❌ 伺服器回應格式錯誤\n\n請按 F12 查看 Console 的詳細錯誤訊息');
+            showDetailedError('註冊失敗', responseText);
+            throw new Error('伺服器回應不是 JSON 格式');
+        }
+
+        // 解析 JSON
+        let result;
+        try {
+            result = JSON.parse(responseText);
+            console.log('🔧 DEBUG: Parsed result =', result);
+        } catch (parseError) {
+            console.error('❌ JSON 解析失敗:', parseError);
+            console.error('❌ 原始內容:', responseText);
+            showDetailedError('JSON 解析失敗', responseText);
+            throw parseError;
+        }
+
+        if (result.success) {
+            alert('註冊成功！請登入');
+            form.reset();
+            switchView('login');
+        } else {
+            alert(result.message || '註冊失敗');
+        }
+
+    } catch (error) {
+        console.error('❌ 註冊錯誤:', error);
+        console.error('❌ 錯誤堆疊:', error.stack);
+    } finally {
+        btn.innerText = originalText;
+        btn.classList.remove('opacity-75', 'cursor-wait');
+        btn.disabled = false;
+    }
+}
+
+// 在頁面上顯示詳細錯誤
+function showDetailedError(title, content) {
+    const errorDiv = document.createElement('div');
+    errorDiv.style.cssText = `
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: white;
+        border: 3px solid red;
+        padding: 20px;
+        max-width: 90%;
+        max-height: 80%;
+        overflow: auto;
+        z-index: 10000;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+        font-family: monospace;
+        font-size: 12px;
+    `;
+    
+    errorDiv.innerHTML = `
+        <div style="color: red; font-weight: bold; font-size: 16px; margin-bottom: 10px;">
+            ${title}
+        </div>
+        <div style="margin-bottom: 10px;">
+            <strong>完整錯誤內容：</strong>
+        </div>
+        <pre style="background: #f5f5f5; padding: 10px; border: 1px solid #ddd; white-space: pre-wrap; word-wrap: break-word;">${escapeHtml(content)}</pre>
+        <button onclick="this.parentElement.remove()" style="margin-top: 10px; padding: 10px 20px; background: red; color: white; border: none; cursor: pointer; font-weight: bold;">
+            關閉
+        </button>
+    `;
+    
+    document.body.appendChild(errorDiv);
+}
+
+// HTML 轉義
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
+loginView.style.transition = 'opacity 0.5s ease';
+registerView.style.transition = 'opacity 0.5s ease';
+
+console.log('✅ JavaScript 載入完成');
+</script>
 </body>
 </html>
