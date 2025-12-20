@@ -43,9 +43,9 @@ class Users
         //密碼hash
         $passwordHash = password_hash($password, PASSWORD_DEFAULT);
         
-        $sql = "INSERT INTO users (username, password_hash, email, 
+        $sql = "INSERT INTO users (username, password_hash, email, coins,
                 email_verified, verification_token, token_expires_at, created_at) 
-                VALUES (?, ?, ?, 0, ?, ?, NOW())";
+                VALUES (?, ?, ?, 500, 0, ?, ?, NOW())";
 
         $stmt = $this->db->prepare($sql);
         

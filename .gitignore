@@ -8,6 +8,7 @@
 # 忽略PHP Cache
 vendor/
 lib/
+logs/
 
 config
 node_modules

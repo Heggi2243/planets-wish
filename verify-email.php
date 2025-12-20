@@ -1,4 +1,10 @@
 <?php
+
+/**
+ * Email 驗證頁面
+ */
+
+require_once __DIR__ . '/config.php';
 require_once __DIR__ . '/models/Database.php';
 require_once __DIR__ . '/models/Users.php';
 
@@ -6,15 +12,32 @@ $token = $_GET['token'] ?? '';
 $message = '';
 $success = false;
 
+//記錄驗證嘗試
+error_log("=== Email 驗證嘗試 ===");
+error_log("Token: " . $token);
+error_log("IP: " . ($_SERVER['REMOTE_ADDR'] ?? 'unknown'));
+
 if (empty($token)) {
+    error_log("驗證失敗：Token 為空");
     $message = '無效的驗證連結';
 } else {
-    $userModel = new Users();
-    $result = $userModel->verifyEmail($token);
-    
-    $success = $result['success'];
-    $message = $result['message'];
-    $username = $result['username'] ?? '';
+    try {
+        $userModel = new Users();
+        $result = $userModel->verifyEmail($token);
+        
+        error_log("驗證結果: " . print_r($result, true));
+        
+        $success = $result['success'];
+        $message = $result['message'];
+        $username = $result['username'] ?? '';
+        
+    } catch (Exception $e) {
+        error_log("驗證異常: " . $e->getMessage());
+        error_log("堆疊: " . $e->getTraceAsString());
+        
+        $success = false;
+        $message = '系統錯誤：' . $e->getMessage();
+    }
 }
 ?>
 <!DOCTYPE html>
@@ -41,43 +64,35 @@ if (empty($token)) {
 
     <!-- Main Content -->
     <main class="flex-grow flex items-center justify-center p-4 z-10">
-        <div class="glass-panel w-full max-w-md rounded-2xl p-8 relative overflow-hidden text-center">
+        <div class="glass-panel glass-panel-card">
             <!-- 裝飾線條 -->
-            <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-neon-cyan to-transparent"></div>
-            <div class="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-neon-purple to-transparent"></div>
+            <div class="line-neon-top"></div>
+            <div class="line-neon-bottom"></div>
 
             <?php if ($success): ?>
                 <!-- 成功訊息 -->
                 <div class="mb-6">
-                    <div class="w-20 h-20 mx-auto mb-4 rounded-full bg-green-500/20 flex items-center justify-center">
-                        <svg class="w-10 h-10 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                        </svg>
-                    </div>
-                    <h2 class="font-orbitron text-2xl text-white mb-2">驗證成功！</h2>
-                    <p class="text-cyan-300/80 mb-4"><?php echo htmlspecialchars($message); ?></p>
+                    <h2 class="font-orbitron text-2xl text-white mb-2"><?php echo htmlspecialchars($message); ?></h2>
                     <p class="text-sm text-gray-400">歡迎加入，<?php echo htmlspecialchars($username); ?>！</p>
+                    </br>
                 </div>
                 
-                <a href="/views/index.php" class="inline-block px-8 py-3 bg-gradient-to-r from-cyan-600 to-blue-700 hover:from-cyan-500 hover:to-blue-600 text-white font-bold rounded-lg shadow-[0_0_20px_rgba(6,182,212,0.4)] transition-all transform hover:scale-[1.02] font-orbitron tracking-wide">
+                <a href="/views/welcome.php" class="btn-primary-gradient">
                     前往登入
                 </a>
 
             <?php else: ?>
                 <!-- 失敗訊息 -->
-                <div class="mb-6">
-                    <div class="w-20 h-20 mx-auto mb-4 rounded-full bg-red-500/20 flex items-center justify-center">
-                        <svg class="w-10 h-10 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                        </svg>
-                    </div>
+                <div class="mb-6" id="failMsg">
                     <h2 class="font-orbitron text-2xl text-white mb-2">驗證失敗</h2>
-                    <p class=" mb-2 text-red-400"><?php echo htmlspecialchars($message); ?></p>
+                    <p class="text-white mb-4"><?php echo htmlspecialchars($message); ?></p>
                 </div>
                 
-                <div class="space-y-3">
-
-                    <button onclick="showResendForm()" class="w-full px-8 py-3 block px-8 py-3 bg-gradient-to-r from-cyan-600 to-blue-700 hover:from-cyan-500 hover:to-blue-600 text-white font-bold rounded-lg shadow-[0_0_20px_rgba(6,182,212,0.4)] transition-all transform hover:scale-[1.02] font-orbitron tracking-wide">
+                <div id="action-buttons" class="space-y-3">
+                    <a href="/views/welcome.php" class="mb-2 btn-secondary-cyan">
+                        返回首頁
+                    </a>
+                    <button onclick="showResendForm()" class="btn-primary-gradient">
                         重新發送驗證信
                     </button>
                 </div>
@@ -92,7 +107,7 @@ if (empty($token)) {
                             class="sci-fi-input w-full px-4 py-3 rounded-lg font-mono"
                             required
                         >
-                        <button type="submit" class="w-full px-8 py-3 bg-gradient-to-r from-purple-600 to-pink-700 hover:from-purple-500 hover:to-pink-600 text-white font-bold rounded-lg shadow-[0_0_20px_rgba(168,85,247,0.4)] transition-all font-orbitron tracking-wide">
+                        <button type="submit" class="btn-primary-gradient">
                             發送驗證信
                         </button>
                     </form>
@@ -107,9 +122,15 @@ if (empty($token)) {
     </footer>
 
     <script>
+        const BASE_URL = window.location.origin;
+
         function showResendForm() {
+            document.getElementById('action-buttons').classList.add('hidden');
             document.getElementById('resend-form').classList.remove('hidden');
+            document.querySelector('#failMsg h2').textContent = "重新驗證信箱";
+            document.querySelector('#failMsg p').classList.add('hidden');
         }
+
 
         async function resendVerification(e) {
             e.preventDefault();
@@ -123,7 +144,7 @@ if (empty($token)) {
             message.textContent = '';
             
             try {
-                const response = await fetch('/controllers/AuthController.php?action=resend-verification', {
+                const response = await fetch(`${BASE_URL}/controllers/AuthController.php?action=resend-verification`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ email })

@@ -90,3 +90,128 @@ body {
 
 /* 隱藏滾動條 */
 ::-webkit-scrollbar { width: 0px; }
+
+
+/* ======== 提示框 =========== */
+
+
+/* 1. 面板樣式 */
+.glass-panel-card {
+    max-width: 28rem;
+    width: 100%;
+    border-radius: 1rem; 
+    padding: 2rem;
+    text-align: center;
+    position: relative;
+    margin: auto;
+    animation: scale-in 0.3s ease-out forwards;
+}
+
+/* 2. 紫紅色按鈕 */
+.btn-primary-gradient {
+    width: 100%;
+    padding: 0.75rem 2rem; 
+    background: linear-gradient(to right, #9333ea, #be185d);
+    color: #ffffff;
+    font-weight: 700;
+    border-radius: 0.5rem;
+    letter-spacing: 0.025em;
+    border: none; /* 清除按鈕預設邊框 */
+    cursor: pointer;
+    font-family: 'Orbitron', sans-serif;
+    box-shadow: 0 0 20px rgba(168, 85, 247, 0.4);
+    transition: all 0.2s ease-in-out;
+}
+
+/* 按鈕 Hover 效果: hover:from-purple-500 hover:to-pink-600 */
+.btn-primary-gradient:hover {
+    background: linear-gradient(to right, #a855f7, #db2777);
+    transform: translateY(-1px);
+    box-shadow: 0 0 25px rgba(168, 85, 247, 0.6);
+}
+
+/* 定義動畫 scale-in */
+@keyframes scale-in {
+    0% {
+        transform: scale(0.9);
+        opacity: 0;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* 藍色按鈕 */
+
+.btn-secondary-cyan {
+    /* Tailwind: block (若要維持寬度撐滿可改用 width: 100%) */
+    display: block;
+    width: 100%; /* 視需求決定是否撐滿 */
+    
+    /* Tailwind: px-8 py-3 */
+    padding: 0.75rem 2rem; /* 上下 12px, 左右 32px */
+    
+    /* Tailwind: bg-gradient-to-r from-cyan-600 to-blue-700 */
+    background: linear-gradient(to right, #0891b2, #1d4ed8);
+    
+    /* Tailwind: text-white font-bold rounded-lg tracking-wide */
+    color: #ffffff;
+    font-weight: 700;
+    border-radius: 0.5rem; /* 8px */
+    letter-spacing: 0.025em;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    text-align: center;
+    
+    /* Tailwind: font-orbitron */
+    font-family: 'Orbitron', sans-serif;
+    
+    /* Tailwind: shadow-[0_0_20px_rgba(6,182,212,0.4)] transition-all */
+    box-shadow: 0 0 20px rgba(6, 182, 212, 0.4);
+    transition: all 0.2s ease-in-out;
+}
+
+/* Hover 狀態 */
+.btn-secondary-cyan:hover {
+    /* Tailwind: hover:from-cyan-500 hover:to-blue-600 */
+    background: linear-gradient(to right, #06b6d4, #2563eb);
+    
+    /* Tailwind: transform hover:scale-[1.02] */
+    transform: scale(1.02);
+    
+    /* 微調陰影讓發光感更強 */
+    box-shadow: 0 0 25px rgba(6, 182, 212, 0.6);
+}
+
+/* Active 狀態（點擊感，額外補充） */
+.btn-secondary-cyan:active {
+    transform: scale(0.98);
+}
+
+/* ==========裝飾線條=========== */
+
+/* 頂部青色發光線 */
+.line-neon-top {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px; /* h-1 */
+    /* 從透明 -> 青色 -> 透明 的漸層 */
+    background: linear-gradient(to right, transparent, #00f2ff, transparent);
+    z-index: 1;
+}
+
+/* 底部紫色發光線 */
+.line-neon-bottom {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 4px; /* h-1 */
+    /* 從透明 -> 紫色 -> 透明 的漸層 */
+    background: linear-gradient(to right, transparent, #a855f7, transparent);
+    z-index: 1;
+}
