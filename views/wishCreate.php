@@ -12,9 +12,10 @@ $additionalJS = ['../js/wishCreate.js'];
 
 $pageContent = function() {
 ?>
-    <div class="absolute top-20 right-10 md:right-1/4 w-48 h-48 z-20 animate-float">
+    <div class="absolute top-20 right-10 md:right-1/4 w-24 h-24 md:w-48 md:h-48 z-20 animate-float">
         <img src="../img/planet2.png" class="w-full h-full object-contain drop-shadow-xl transform" />
     </div>
+    
     <main class="container mx-auto px-4 flex flex-col items-center justify-center min-h-screen py-20 relative z-10">
         
         <!-- 1. 核心互動區：傳送門 -->
@@ -45,11 +46,11 @@ $pageContent = function() {
 
         <!-- 流星裝飾 -->
         <div class="absolute bottom-0 w-full">
-            <div class="absolute bottom-20 right-10 md:right-[25%] w-48 h-48 md:w-56 md:h-56 z-20 animate-float">
+            <div class="absolute bottom-20 right-10 w-32 h-32 md:w-56 md:h-56 z-20 animate-float">
                 <img src="../img/meteor.png" class="w-full h-full object-contain drop-shadow-xl" />
             </div>
 
-            <div class="absolute bottom-20 left-10 md:left-[25%] w-48 h-48 md:w-56 md:h-56 z-20 animate-float">
+            <div class="absolute bottom-20 left-10 w-32 h-32 md:w-56 md:h-56 z-20 animate-float">
                 <img src="../img/UFO.png" style="transform: rotate(-12deg);" class="w-full h-full object-contain" />
             </div>
         </div>

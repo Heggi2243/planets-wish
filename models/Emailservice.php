@@ -170,7 +170,7 @@ class EmailService
                 <p>請點擊下方按鈕驗證您的 Email 地址：</p>
                 
                 <div style="text-align: center;">
-                    <a href="{$verifyUrl}" class="button">驗證 Email</a>
+                    <a href="{$verifyUrl}" class="button" style="color: #ffffff; text-decoration: none;">驗證 Email</a>
                 </div>
                 
                 <div class="note">

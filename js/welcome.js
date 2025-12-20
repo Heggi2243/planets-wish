@@ -211,25 +211,22 @@ function showVerificationNeeded(email) {
     `;
     
     modal.innerHTML = `
-        <div class="glass-panel max-w-md w-full rounded-2xl p-8 text-center relative">
-            <div class="w-20 h-20 mx-auto mb-4 rounded-full bg-yellow-500/20 flex items-center justify-center">
-                <svg class="w-10 h-10 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
-                </svg>
-            </div>
+        <div class="glass-panel glass-panel-card">
+        <div class="line-neon-top"></div>
+        <div class="line-neon-bottom"></div>
             <h2 class="font-orbitron text-2xl text-white mb-3">未完成驗證</h2>
-            <p class="text-yellow-300/80 mb-2">您的帳號尚未完成Email驗證</p>
-            <p class="text-sm text-gray-400 mb-6">請先至信箱完成驗證後再登入</p>
+            <p class="text-white mb-2">您的帳號尚未完成Email驗證</p>
+            <p class="ext-sm text-gray-400 mb-6">請先至信箱完成驗證後再登入</p>
             
             <div class="space-y-3">
-                <button onclick="resendVerificationEmail('${email}')" class="w-full px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-700 hover:from-purple-500 hover:to-pink-600 text-white font-bold rounded-lg shadow-[0_0_20px_rgba(168,85,247,0.4)] transition-all font-orbitron tracking-wide">
+                <button onclick="resendVerificationEmail('${email}')" class="mb-2 btn-secondary-cyan">
                     重新發送驗證信
                 </button>
-                <button onclick="closeModal('verification-modal')" class="w-full px-6 py-3 bg-white/10 hover:bg-white/20 text-white font-bold rounded-lg border border-white/30 transition-all font-orbitron tracking-wide">
+                <button onclick="closeModal('verification-modal')" class="btn-primary-gradient">
                     關閉
                 </button>
             </div>
-            <p id="resend-message" class="mt-4 text-sm"></p>
+            <p id="resend-message" class="mt-4 text-white"></p>
         </div>
     `;
     document.body.appendChild(modal);

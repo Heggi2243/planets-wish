@@ -5,10 +5,10 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [    
-    "./views/**/*.php",      // ✅ 修正：view → views
+    "./views/**/*.php", 
     "./index.php",
     "./**/*.html",
-    "./verify-email.php"     // ✅ 新增：根目錄的 PHP 檔案
+    "./verify-email.php" 
   ],
   theme: {
       extend: {
@@ -34,19 +34,17 @@ module.exports = {
               'neon-purple': '#bc13fe',
           },
           animation: {
-              'spin-slow': 'spin-slow 20s linear infinite',        // ✅ 修正：使用自訂 keyframe
+              'spin-slow': 'spin-slow 20s linear infinite',
               'pulse-fast': 'pulse-fast 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-              'float': 'float 3s ease-in-out infinite',            // ✅ 修正：改為 3s
+              'float': 'float 3s ease-in-out infinite', 
               'fade-in': 'fadeIn 1s ease-out forwards',
               'pulse-glow': 'pulseGlow 3s infinite',
           },
           keyframes: {
-              // ✅ 新增：慢速旋轉
               'spin-slow': {
                   '0%': { transform: 'rotate(0deg)' },
                   '100%': { transform: 'rotate(360deg)' }
               },
-              // ✅ 新增：快速脈動
               'pulse-fast': {
                   '0%, 100%': { 
                       opacity: '0.75',
@@ -57,7 +55,6 @@ module.exports = {
                       transform: 'scale(1.05)' 
                   }
               },
-              // ✅ 修正：漂浮動畫
               float: {
                   '0%, 100%': { transform: 'translateY(0px)' },
                   '50%': { transform: 'translateY(-10px)' },
