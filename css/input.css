@@ -215,3 +215,69 @@ body {
     background: linear-gradient(to right, transparent, #a855f7, transparent);
     z-index: 1;
 }
+
+/*=================================*/
+
+@layer utilities {
+    /* 快速脈動 */
+    @keyframes pulse-fast {
+        0%, 100% {
+            opacity: 0.75;
+            transform: scale(1);
+        }
+        50% {
+            opacity: 1;
+            transform: scale(1.05);
+        }
+    }
+
+    .animate-pulse-fast {
+        animation: pulse-fast 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+
+    /* 慢速旋轉 */
+    @keyframes spin-slow {
+        from {
+            transform: rotate(0deg);
+        }
+        to {
+            transform: rotate(360deg);
+        }
+    }
+
+    .animate-spin-slow {
+        animation: spin-slow 20s linear infinite;
+    }
+
+    /* 漂浮動畫 */
+    @keyframes float {
+        0%, 100% {
+            transform: translateY(0px);
+        }
+        50% {
+            transform: translateY(-10px);
+        }
+    }
+
+    .animate-float {
+        animation: float 3s ease-in-out infinite;
+    }
+
+    /* 傳送門光暈 - 橘黃色調 */
+    .portal-glow {
+        box-shadow: 
+            0 0 20px rgba(251, 146, 60, 0.5),
+            0 0 40px rgba(251, 146, 60, 0.3),
+            0 0 60px rgba(251, 146, 60, 0.2),
+            inset 0 0 20px rgba(251, 146, 60, 0.1);
+        transition: box-shadow 0.3s ease;
+    }
+
+    .portal-glow:hover {
+        box-shadow: 
+            0 0 30px rgba(251, 146, 60, 0.8),
+            0 0 60px rgba(251, 146, 60, 0.5),
+            0 0 90px rgba(251, 146, 60, 0.3),
+            inset 0 0 30px rgba(251, 146, 60, 0.2);
+    }
+}

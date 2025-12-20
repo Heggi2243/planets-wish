@@ -5,12 +5,20 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [    
-    "./view/**/*.php",
+    "./views/**/*.php",      // ✅ 修正：view → views
     "./index.php",
-    "./**/*.html"
+    "./**/*.html",
+    "./verify-email.php"     // ✅ 新增：根目錄的 PHP 檔案
   ],
   theme: {
       extend: {
+            spacing: {
+            '1/4': '25%',
+            '1/3': '33.333333%',
+            '1/2': '50%',
+            '2/3': '66.666667%',
+            '3/4': '75%',
+        },
           fontFamily: {
               'orbitron': ['"Orbitron"', 'sans-serif'],
               'display': ['"Orbitron"', 'sans-serif'],
@@ -26,16 +34,33 @@ module.exports = {
               'neon-purple': '#bc13fe',
           },
           animation: {
-              'spin-slow': 'spin 12s linear infinite',
-              'pulse-fast': 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-              'float': 'float 6s ease-in-out infinite',
+              'spin-slow': 'spin-slow 20s linear infinite',        // ✅ 修正：使用自訂 keyframe
+              'pulse-fast': 'pulse-fast 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+              'float': 'float 3s ease-in-out infinite',            // ✅ 修正：改為 3s
               'fade-in': 'fadeIn 1s ease-out forwards',
               'pulse-glow': 'pulseGlow 3s infinite',
           },
           keyframes: {
+              // ✅ 新增：慢速旋轉
+              'spin-slow': {
+                  '0%': { transform: 'rotate(0deg)' },
+                  '100%': { transform: 'rotate(360deg)' }
+              },
+              // ✅ 新增：快速脈動
+              'pulse-fast': {
+                  '0%, 100%': { 
+                      opacity: '0.75',
+                      transform: 'scale(1)' 
+                  },
+                  '50%': { 
+                      opacity: '1',
+                      transform: 'scale(1.05)' 
+                  }
+              },
+              // ✅ 修正：漂浮動畫
               float: {
-                  '0%, 100%': { transform: 'translateY(0)' },
-                  '50%': { transform: 'translateY(-20px)' },
+                  '0%, 100%': { transform: 'translateY(0px)' },
+                  '50%': { transform: 'translateY(-10px)' },
               },
               fadeIn: {
                   '0%': { opacity: '0', transform: 'translateY(20px)' },
@@ -47,7 +72,6 @@ module.exports = {
               }
           }
       }
-  }
-        
+  },
+  plugins: [],
 }
-

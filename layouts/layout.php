@@ -34,10 +34,6 @@ $additionalJS = $additionalJS ?? [];
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Noto+Sans+TC:wght@300;400;700&display=swap" rel="stylesheet">
     
-    <!-- 額外的 CSS -->
-    <?php foreach ($additionalCSS as $css): ?>
-        <link rel="stylesheet" href="<?php echo htmlspecialchars($css); ?>">
-    <?php endforeach; ?>
 </head>
 <body class="min-h-screen flex flex-col relative">
     
@@ -71,16 +67,17 @@ $additionalJS = $additionalJS ?? [];
         </footer>
     <?php endif; ?>
 
-    <!-- 額外的 JS -->
+    <!-- 額外的JS，多個頁面都需要或是code > 50行-->
     <?php foreach ($additionalJS as $js): ?>
         <script src="<?php echo htmlspecialchars($js); ?>"></script>
     <?php endforeach; ?>
     
-    <!-- 頁面專屬 JS -->
+    <!-- 頁面專屬JS，只有一個頁面使用或是code 20~50行-->
     <?php if (isset($pageScript) && is_callable($pageScript)): ?>
         <script>
             <?php $pageScript(); ?>
         </script>
     <?php endif; ?>
+
 </body>
 </html>
