@@ -150,12 +150,17 @@ planets-wish/
 - Composer（選用）
 - cURL 擴展（用於 API 請求）
 
+## 功能展示
+- Email驗證：
+<img width="1200" height="824" alt="mail google com_mail_u_0__hl=zh-TW" src="https://github.com/user-attachments/assets/1ac32a13-4214-4fdc-a19a-f019a564f5b7" />
+
 
 ## 📊 開發進度
 
 - [x] 資料庫設計
 - [x] 行星資料抓取系統
 - [x] RPG 屬性計算邏輯
+- [x] phpmailer信箱驗證
 - [ ] 使用者註冊/登入
 - [ ] 許願系統
 - [ ] 屬性匹配演算法
