@@ -15,7 +15,22 @@ body {
     top: 0; left: 0; right: 0; bottom: 0;
     width: 100%; height: 100%;
     display: block;
+    z-index: 0 !important;
 }
+
+.gradient-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: clamp(1.5rem, 4vw, 2.25rem);
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    background: linear-gradient(to right, #00f2ff, #bc13fe);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 0 10px rgba(0, 242, 255, 0.5));
+}
+
+
 
 /* 簡單的星星背景圖案 */
 .stars {

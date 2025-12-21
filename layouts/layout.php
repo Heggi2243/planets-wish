@@ -15,7 +15,6 @@
 
 // 預設值
 $pageTitle = $pageTitle ?? 'Planets-Wish | 星願';
-$showHeader = $showHeader ?? true;
 $showFooter = $showFooter ?? true;
 $additionalCSS = $additionalCSS ?? [];
 $additionalJS = $additionalJS ?? [];
@@ -41,14 +40,12 @@ $additionalJS = $additionalJS ?? [];
     <div class="stars"></div>
     <div class="twinkling"></div>
 
-    <?php if ($showHeader): ?>
-        <!-- Header (始終顯示) -->
-        <header class="w-full p-6 text-center z-20 relative">
-            <h1 class="font-orbitron text-2xl md:text-4xl font-bold tracking-[0.2em] text-transparent bg-clip-text bg-gradient-to-r from-neon-cyan to-neon-purple drop-shadow-[0_0_10px_rgba(0,242,255,0.5)]">
-                PLANETS WISH
-            </h1>
-        </header>
-    <?php endif; ?>
+    <!-- Header (始終顯示) -->
+    <header class="w-full p-6 text-center z-20 relative">
+        <h1 class="gradient-title">
+            PLANETS WISH
+        </h1>
+    </header>
 
     <!-- 主要內容區 -->
     <main class="flex-grow z-10">
@@ -62,7 +59,7 @@ $additionalJS = $additionalJS ?? [];
 
     <?php if ($showFooter): ?>
         <!-- Footer -->
-        <footer class="text-center py-4 text-gray-600 text-xs font-mono relative z-10">
+        <footer class="text-center py-4 text-white text-xs font-mono pb-12 mt-6 relative z-20">
             星願 Planets-Wish © 2025
         </footer>
     <?php endif; ?>

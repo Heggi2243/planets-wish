@@ -12,12 +12,19 @@ module.exports = {
   ],
   theme: {
       extend: {
+            inset: {
+                '10': '2rem', // 這會將top-10, bottom-10等都設為2.5rem
+                '15': '4rem',
+                '24': '6rme',
+                '30': '7rem',
+            },
             spacing: {
             '1/4': '25%',
             '1/3': '33.333333%',
             '1/2': '50%',
             '2/3': '66.666667%',
             '3/4': '75%',
+            '40' : '10rem',
         },
           fontFamily: {
               'orbitron': ['"Orbitron"', 'sans-serif'],
