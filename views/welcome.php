@@ -12,6 +12,7 @@ $additionalJS = ['../js/welcome.js'];
 
 $pageContent = function() {
 ?>
+<main>
     <!-- AUTH:登入/註冊區塊 -->
     <div class="flex items-center justify-center p-4">
         <div class="glass-panel w-full max-w-md rounded-2xl p-8 relative overflow-hidden animate-float">
@@ -93,6 +94,7 @@ $pageContent = function() {
             </div>
         </div>
     </div>
+</main>
 <?php
 };
 

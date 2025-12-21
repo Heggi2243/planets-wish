@@ -21,18 +21,29 @@
         </div>
 
 
-    <div class="glass-panel glass-panel-card">
-        <div class="line-neon-top"></div>
-        <div class="line-neon-bottom"></div>
-        <div class="mb-6">
-            <h2 class="font-orbitron text-2xl text-white mb-2">註冊成功</h2>
-            <p class="text-sm text-gray-400">歡迎加入，123！</p>
+    <div id="daily-limit-modal" class=" fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center">
+        <div class="glass-panel rounded-2xl p-8 max-w-md mx-4 shadow-2xl animate-fade-in">
+            <!-- 標題 -->
+            <div class="text-center mb-6">
+                <div class="inline-block rounded-full mb-4">
+                </div>
+                <h3 class="text-2xl font-orbitron font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-400">
+                    今日已許願
+                </h3>
+            </div>
+            
+            <!-- 內容 -->
+            <p class="text-gray-300 text-center mb-6 leading-relaxed">
+                你今天已經許過願囉！<br>
+                每位旅者每天只能召喚一次行星。<br>
+                <span class="text-cyan-400 font-bold">明天再來吧！</span>
+            </p>
+            
+            <!-- 按鈕 -->
+            <button id="close-modal-btn" class="btn-primary-gradient">
+                我知道了
+            </button>
         </div>
-        
-        <a href="/views/welcome.php" class="inline-block px-8 py-3 bg-gradient-to-r from-cyan-600 to-blue-700 hover:from-cyan-500 hover:to-blue-600 text-white font-bold rounded-lg shadow-[0_0_20px_rgba(6,182,212,0.4)] transition-all transform hover:scale-[1.02] font-orbitron tracking-wide">
-            前往登入
-        </a>
     </div>
-
 </body>
 </html>

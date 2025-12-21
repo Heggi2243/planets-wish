@@ -1,13 +1,5 @@
 <?php
-/* AuthController - 加強除錯版本 */
-
-// 開啟錯誤顯示（開發階段）
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-
-// 記錄所有錯誤到日誌
-ini_set('log_errors', 1);
-ini_set('error_log', __DIR__ . '/../logs/auth_errors.log');
+/* AuthController */
 
 require_once __DIR__ . '/../config.php';
 require_once '../models/Database.php';
@@ -17,21 +9,11 @@ require_once '../models/EmailService.php';
 // 設定json回應
 header('Content-Type: application/json');
 
-// ✅ 記錄請求資訊
-error_log("=== 新的請求 ===");
-error_log("時間: " . date('Y-m-d H:i:s'));
-error_log("IP: " . ($_SERVER['REMOTE_ADDR'] ?? 'unknown'));
-error_log("方法: " . ($_SERVER['REQUEST_METHOD'] ?? 'unknown'));
-
 // 取得請求資料
 $action = $_GET['action'] ?? '';
 $rawInput = file_get_contents('php://input');
 $input = json_decode($rawInput, true);
 
-// 記錄請求內容
-error_log("Action: $action");
-error_log("Raw Input: $rawInput");
-error_log("Decoded Input: " . print_r($input, true));
 
 // 檢查JSON解析是否成功
 if (json_last_error() !== JSON_ERROR_NONE) {

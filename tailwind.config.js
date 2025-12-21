@@ -25,6 +25,8 @@ module.exports = {
             '2/3': '66.666667%',
             '3/4': '75%',
             '40' : '10rem',
+            '80': '20rem',
+            '90': '25rem',
         },
           fontFamily: {
               'orbitron': ['"Orbitron"', 'sans-serif'],

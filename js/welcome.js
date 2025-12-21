@@ -315,7 +315,7 @@ function escapeHtml(text) {
 
 // 初始化
 document.addEventListener('DOMContentLoaded', function() {
-    // 添加動畫 CSS
+
     const style = document.createElement('style');
     style.textContent = `
         @keyframes scale-in {
@@ -329,6 +329,4 @@ document.addEventListener('DOMContentLoaded', function() {
 
     loginView.style.transition = 'opacity 0.5s ease';
     registerView.style.transition = 'opacity 0.5s ease';
-
-    console.log('✅ JavaScript 載入完成');
 });

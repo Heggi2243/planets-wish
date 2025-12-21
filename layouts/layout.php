@@ -48,18 +48,16 @@ $additionalJS = $additionalJS ?? [];
     </header>
 
     <!-- 主要內容區 -->
-    <main class="flex-grow z-10">
         <?php 
         // 執行頁面內容函數
         if (isset($pageContent) && is_callable($pageContent)) {
             $pageContent();
         }
         ?>
-    </main>
 
     <?php if ($showFooter): ?>
         <!-- Footer -->
-        <footer class="text-center py-4 text-white text-xs font-mono pb-12 mt-6 relative z-20">
+        <footer class="text-center py-4 text-white text-xs font-mono pb-12 mt-6 mb-3 relative z-20">
             星願 Planets-Wish © 2025
         </footer>
     <?php endif; ?>
