@@ -1,5 +1,5 @@
 <?php
-/* AuthController */
+/* AuthController - welcome.js跟verify-email.js用 */
 
 require_once __DIR__ . '/../config.php';
 require_once '../models/Database.php';

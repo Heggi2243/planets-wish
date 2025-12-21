@@ -6,10 +6,9 @@
 
 session_start();
 
-// TODO: 後續會改成從資料庫和 API 取得真實行星資料
-// 目前用模擬資料
+// TODO: 後續會改成從資料庫取得真實行星資料
 
-// 🔧 模擬：生成隨機行星資料
+// 模擬假資料
 function generatePlanet() {
     $planets = [
         [
@@ -47,8 +46,9 @@ function generatePlanet() {
     return $planets[array_rand($planets)];
 }
 
-// 檢查是否點擊太空人（通過 GET 參數）
+// 檢查是否點擊太空人
 $showPlanet = isset($_GET['summon']) && $_GET['summon'] === 'true';
+
 
 // 如果要顯示行星，生成資料
 $planetData = null;
@@ -206,23 +206,6 @@ $pageContent = function() use ($showPlanet, $planetData) {
     <?php endif; ?>
 </main>
 
-<style>
-/* 淡入動畫 */
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.animate-fade-in {
-    animation: fadeIn 0.8s ease-out forwards;
-}
-</style>
 <?php
 };
 

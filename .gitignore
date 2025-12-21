@@ -9,6 +9,7 @@
 vendor/
 lib/
 logs/
+src/output.css
 
 config
 node_modules
