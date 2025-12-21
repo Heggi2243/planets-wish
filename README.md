@@ -40,7 +40,7 @@ planets-wish/
 │   └── Wish.php          # 許願紀錄
 ├── views/                # 視圖
 │   ├── welcome.php
-│   └── wishCreate.php
+│   └── wishHome.php
 ├── css/
 │   └── input.css
 ├── src/

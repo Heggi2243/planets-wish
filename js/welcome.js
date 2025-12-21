@@ -66,7 +66,7 @@ async function handleLogin(e) {
         const result = await response.json();
 
         if (result.success) {
-            window.location.href = 'wishCreate.php';
+            window.location.href = 'wishHome.php';
         } else if (result.needs_verification) {
             showVerificationNeeded(result.email);
         } else {
