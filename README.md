@@ -1,3 +1,5 @@
+<img width="1912" height="904" alt="wishHome" src="https://github.com/user-attachments/assets/a432e18e-1d8c-48cd-b33a-9879d8beb749" />
+
 # Planets-Wish (星願) 🌟
 
 一個結合天文資料與RPG遊戲機制的許願收集遊戲，使用PHP+MySQL開發。
