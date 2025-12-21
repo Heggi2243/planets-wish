@@ -1,6 +1,6 @@
 <?php
 /**
- * EmailService Model
+ * EmailService
  * 處理所有 Email 相關功能
  */
 
@@ -35,6 +35,11 @@ class EmailService
             $this->mailer->Password   = $_ENV['SMTP_PASSWORD'] ?? '';
             $this->mailer->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
             $this->mailer->Port       = $_ENV['SMTP_PORT'] ?? 587;
+
+            // 設定郵件編碼為UTF-8，避免亂碼
+            $this->mailer->CharSet = 'UTF-8';
+            // 確保特殊字元傳輸穩定
+            $this->mailer->Encoding = 'base64';
             
         } catch (Exception $e) {
 

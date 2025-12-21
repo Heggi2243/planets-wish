@@ -27,8 +27,8 @@ $additionalJS = $additionalJS ?? [];
     <title><?php echo htmlspecialchars($pageTitle); ?></title>
     
     <!-- 固定的 CSS -->
-    <link rel="stylesheet" href="../css/input.css">
-    <link href="../src/output.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/input.css">
+    <link rel="stylesheet" href="/src/output.css">
     
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Noto+Sans+TC:wght@300;400;700&display=swap" rel="stylesheet">

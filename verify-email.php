@@ -5,8 +5,8 @@
  * 已套用layout
  */
 
-require_once __DIR__ . '/config.php';
-require_once __DIR__ . '/models/Database.php';
+require_once __DIR__ . '/config/config.php';
+require_once __DIR__ . '/config/Database.php';
 require_once __DIR__ . '/models/Users.php';
 
 $token = $_GET['token'] ?? '';
@@ -64,7 +64,7 @@ $pageContent = function() use ($success, $message, $username, $alreadyVerified) 
                 </br>
             </div>
             
-            <a href="/views/welcome.php" class="btn-primary-gradient">
+            <a href="/views/auth/index.php" class="btn-primary-gradient">
                 前往登入
             </a>
 
@@ -76,7 +76,7 @@ $pageContent = function() use ($success, $message, $username, $alreadyVerified) 
             </div>
             
             <div id="action-buttons" class="space-y-3">
-                <a href="/views/welcome.php" class="mb-2 btn-secondary-cyan">
+                <a href="/views/auth/index.php" class="mb-2 btn-secondary-cyan">
                     返回首頁
                 </a>
                 <button onclick="showResendForm()" class="btn-primary-gradient">

@@ -8,7 +8,7 @@
 $pageTitle = 'Planets-Wish | 行星之願';
 
 // 引入JS
-$additionalJS = ['../js/welcome.js'];
+$additionalJS = ['../../js/auth.js'];
 
 $pageContent = function() {
 ?>
@@ -99,4 +99,4 @@ $pageContent = function() {
 };
 
 // 引入layout
-require_once __DIR__ . '/../layouts/layout.php';
+require_once __DIR__ . '/../../layouts/layout.php';

@@ -1,5 +1,5 @@
 /**
- * Welcome.php的JS
+ * auth/index.php的JS
  * 處理登入/註冊功能
  */
 
@@ -66,7 +66,7 @@ async function handleLogin(e) {
         const result = await response.json();
 
         if (result.success) {
-            window.location.href = 'wishHome.php';
+            window.location.href = '../wish/index.php';
         } else if (result.needs_verification) {
             showVerificationNeeded(result.email);
         } else {

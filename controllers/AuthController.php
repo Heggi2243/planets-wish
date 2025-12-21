@@ -1,10 +1,11 @@
 <?php
-/* AuthController - welcome.js跟verify-email.js用 */
+/* AuthController - auth.js跟verify-email.js用 
+未來如果需要處理會員資料(個人資料、修改密碼、查詢...等)再來建UsersController */
 
-require_once __DIR__ . '/../config.php';
-require_once '../models/Database.php';
+require_once __DIR__ . '/../config/config.php';
+require_once '../config/Database.php';
 require_once '../models/Users.php';
-require_once '../models/EmailService.php';
+require_once '../services/EmailService.php';
 
 // 設定json回應
 header('Content-Type: application/json');

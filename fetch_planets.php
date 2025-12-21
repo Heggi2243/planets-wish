@@ -5,7 +5,7 @@
  * 
  */
 
-require_once 'models/Database.php';
+require_once 'config/Database.php';
 require_once 'models/Planets.php';
 
 // 載入環境變數

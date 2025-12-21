@@ -1,6 +1,6 @@
 <?php
 /**
- * wishHome.php 登入後主畫面
+ * wish/index.php 登入後主畫面
  * 已套用layout
  */
 
@@ -16,7 +16,7 @@ $hasWishedToday = ($lastSummonDate === $today);
 $pageTitle = 'Planets-Wish';
 
 
-$pageScript = ['../js/wishHome.js'];
+$pageScript = ['../../js/wishIndex.js'];
 
 // 無JS
 
@@ -24,7 +24,7 @@ $pageContent = function()  use ($hasWishedToday) {
 ?>
     <!-- 綠色行星裝飾 -->
     <div class="absolute top-20 right-10 md:right-1/4 w-24 h-24 md:w-32 md:h-32 z-20 animate-float">
-        <img src="../img/planet2.png" class="w-full h-full object-contain drop-shadow-xl transform" />
+        <img src="../../img/planet2.png" class="w-full h-full object-contain drop-shadow-xl transform" />
     </div>
     
     <!-- 許願紀錄 -->
@@ -32,7 +32,7 @@ $pageContent = function()  use ($hasWishedToday) {
         class="group absolute top-30 left-10 w-24 h-24 md:w-64 md:h-64 z-20 animate-float transition-transform duration-300 cursor-pointer flex flex-col items-center text-decoration-none">
         <div class="w-24 h-24 md:w-56 md:h-56">
             <img
-                src="../img/satellite.png"
+                src="../../img/satellite.png"
                 class="w-full h-full object-contain transform transition-all duration-300 
                     drop-shadow-xl 
                     group-hover:drop-shadow-[0_0_20px_rgba(56,189,248,0.9)]
@@ -62,7 +62,7 @@ $pageContent = function()  use ($hasWishedToday) {
                     <button id="summon-btn" class="relative w-48 h-48 md:w-64 md:h-64 rounded-full flex items-center justify-center portal-glow animate-float overflow-visible cursor-pointer">
                         <div class="absolute inset-0 flex items-center justify-center">
                             <img 
-                                src="../img/planet3.png" 
+                                src="../../img/planet3.png" 
                                 alt="Planet Portal" 
                                 class="w-full h-full object-contain animate-spin-slow"
                             />
@@ -73,14 +73,13 @@ $pageContent = function()  use ($hasWishedToday) {
                     <a href="./wishCall.php" class="relative w-48 h-48 md:w-64 md:h-64 rounded-full flex items-center justify-center portal-glow animate-float overflow-visible block">
                         <div class="absolute inset-0 flex items-center justify-center">
                             <img 
-                                src="../img/planet3.png" 
+                                src="../../img/planet3.png" 
                                 alt="Planet Portal" 
                                 class="w-full h-full object-contain animate-spin-slow"
                             />
                         </div>
                     </a>
                 <?php endif; ?>
-</a>
             </div>
             <p class="text-center text-gray-400 mt-8 animate-bounce text-sm">今天會與哪個行星邂逅呢？點擊許願</p>
         </div>
@@ -90,11 +89,11 @@ $pageContent = function()  use ($hasWishedToday) {
     <!-- 流星裝飾 -->
     <div class="absolute bottom-0 w-full">
         <div class="absolute bottom-20 right-10 w-32 h-32 md:w-56 md:h-56 z-20 animate-float">
-            <img src="../img/meteor.png" class="w-full h-full object-contain drop-shadow-xl" />
+            <img src="../../img/meteor.png" class="w-full h-full object-contain drop-shadow-xl" />
         </div>
 
         <div class="absolute bottom-20 left-10 w-32 h-32 md:w-56 md:h-56 z-20 animate-float">
-            <img src="../img/UFO.png" style="transform: rotate(-12deg);" class="w-full h-full object-contain" />
+            <img src="../../img/UFO.png" style="transform: rotate(-12deg);" class="w-full h-full object-contain" />
         </div>
     </div>
 
@@ -125,4 +124,4 @@ $pageContent = function()  use ($hasWishedToday) {
 };
 
 // 引入layout
-require_once __DIR__ . '/../layouts/layout.php';
+require_once __DIR__ . '/../../layouts/layout.php';

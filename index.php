@@ -1,4 +1,4 @@
 <?php
-// 暫時導向 welcome.php
-header('Location: /views/welcome.php');
+// 暫時導向 login.php
+header('Location: /views/auth/index.php');
 exit;
