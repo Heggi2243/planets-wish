@@ -33,8 +33,8 @@ planets-wish/
 │   ├── Database.php       # 資料庫連線類別
 ├── controllers/           # 控制器
 │   ├── AuthController.php
-│   ├── BaseController.php
-│   ├── HomeController.php
+│   ├── BaseController.php # 基礎控制器 
+│   ├── HomeController.php # 首頁控制器
 │   └── WishController.php
 ├── models/               # 模型
 │   ├── Inventory.php     # 背包(玩家持有道具)
