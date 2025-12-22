@@ -94,6 +94,12 @@ planets-wish/
 | intel_stat | INT | 智慧值 (0-3) |
 | distance_ly | FLOAT | 距離（光年） |
 | description | TEXT | 描述 |
+| suggestion | TEXT | 許願建議 |
+| mass | FLOAT | 行星質量 |
+| radius | FLOAT | 行星半徑 |
+| period | FLOAT | 公轉週期 (天) |
+| temperature | INT | 表面溫度 (K) |
+| semi_major_axis | FLOAT | 軌道半長軸 (AU) |
 
 ### Items (道具表)
 
@@ -125,6 +131,7 @@ planets-wish/
 | id | INT | 主鍵 |
 | user_id | INT | 使用者 ID |
 | planet_id | INT | 行星 ID |
+| wish_type | ENUM | 許願類型(健康/事業/財富/感情) |
 | wish_content | TEXT | 許願內容 |
 | status | ENUM | 狀態（traveling/arrived/failed） |
 | created_at | DATETIME | 召喚時間 |
@@ -174,8 +181,6 @@ planets-wish/
 - [x] 使用者註冊/登入
 - [ ] 許願系統
 - [ ] 屬性匹配演算法
-- [ ] 道具商店
-- [ ] 背包系統
 - [ ] 收集紀錄展示
 
 
