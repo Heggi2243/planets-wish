@@ -8,7 +8,7 @@
 $pageTitle = 'Planets-Wish | 星願紀錄';
 
 // 引入JS
-$additionalJS = ['../js/wishRecord.js'];
+$additionalJS = ['../../js/wishRecord.js'];
 
 $pageContent = function() {
 ?>
@@ -78,4 +78,4 @@ $pageContent = function() {
 };
 
 // 引入layout
-require_once __DIR__ . '/../layouts/layout.php';
+require_once __DIR__ . '/../../layouts/layout.php';

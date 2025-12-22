@@ -1,4 +1,5 @@
 <?php
+namespace services;
 /**
  * EmailService
  * 處理所有 Email 相關功能

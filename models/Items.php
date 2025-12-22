@@ -1,4 +1,5 @@
 <?php
+namespace models;
 /**
  * 商店商品
  */
@@ -8,7 +9,7 @@ class Items
     
     public function __construct()
     {
-        $this->db = Database::connect();
+        $this->db = \Database::connect();
     }
     
     /**

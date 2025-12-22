@@ -4,21 +4,8 @@
  * 已套用layout
  */
 
-session_start();
-
-// 檢查今日是否已許願
-$today = date('Y-m-d');
-$lastSummonDate = $_SESSION['last_daily_summon_date'] ?? null;
-$hasWishedToday = ($lastSummonDate === $today);
-
-
-// 頁面標題
-$pageTitle = 'Planets-Wish';
-
-
 $pageScript = ['../../js/wishIndex.js'];
 
-// 無JS
 
 $pageContent = function()  use ($hasWishedToday) {
 ?>
@@ -28,7 +15,7 @@ $pageContent = function()  use ($hasWishedToday) {
     </div>
     
     <!-- 許願紀錄 -->
-    <a href="./wishRecord.php"
+    <a href="/wish/record"
         class="group absolute top-30 left-10 w-24 h-24 md:w-64 md:h-64 z-20 animate-float transition-transform duration-300 cursor-pointer flex flex-col items-center text-decoration-none">
         <div class="w-24 h-24 md:w-56 md:h-56">
             <img
@@ -70,7 +57,7 @@ $pageContent = function()  use ($hasWishedToday) {
                     </button>
                 <?php else: ?>
                     <!-- 今天未許願: 跳轉 -->
-                    <a href="./wishCall.php" class="relative w-48 h-48 md:w-64 md:h-64 rounded-full flex items-center justify-center portal-glow animate-float overflow-visible block">
+                    <a href="/wish/create" class="relative w-48 h-48 md:w-64 md:h-64 rounded-full flex items-center justify-center portal-glow animate-float overflow-visible block">
                         <div class="absolute inset-0 flex items-center justify-center">
                             <img 
                                 src="../../img/planet3.png" 

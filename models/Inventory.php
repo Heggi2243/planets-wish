@@ -1,4 +1,5 @@
 <?php
+namespace models;
 /**
  * 背包(玩家持有道具)
  */
@@ -8,7 +9,7 @@ class Inventory
     
     public function __construct()
     {
-        $this->db = Database::connect();
+        $this->db = \Database::connect();
     }
     
     /**

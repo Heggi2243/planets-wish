@@ -46,7 +46,7 @@ async function handleLogin(e) {
     btn.classList.add('opacity-75', 'cursor-wait');
     btn.disabled = true;
 
-    const apiUrl = `${BASE_URL}/controllers/AuthController.php?action=login`;
+    const apiUrl = `${BASE_URL}/auth/login`; 
 
     try {
         const response = await fetch(apiUrl, {
@@ -66,7 +66,8 @@ async function handleLogin(e) {
         const result = await response.json();
 
         if (result.success) {
-            window.location.href = '../wish/index.php';
+            // 不能直接訪問/views/wish/index.php，會繞過路由導致wishController變數傳不到view
+            window.location.href = '/wish';
         } else if (result.needs_verification) {
             showVerificationNeeded(result.email);
         } else {
@@ -111,7 +112,7 @@ async function handleRegister(e) {
     btn.classList.add('opacity-75', 'cursor-wait');
     btn.disabled = true;
 
-    const apiUrl = `${BASE_URL}/controllers/AuthController.php?action=register`;
+    const apiUrl = `${BASE_URL}/auth/register`; 
 
     try {
         const response = await fetch(apiUrl, {
@@ -175,13 +176,11 @@ function showVerificationModal(email) {
         <div class="glass-panel glass-panel-card">
             <h2 class="font-orbitron text-2xl text-white mb-3">註冊成功！</h2>
             <p class="text-white mb-2">請至您的信箱收取驗證信</p>
-            <p class="text-sm text-gray-400 mb-6">${email}</p>
+            <p class="text-sm text-gray-400 mb-6">${escapeHtml(email)}</p>
             <button onclick="closeModal('verification-modal'); switchView('login')" class="btn-primary-gradient">
                 返回登入頁
             </button>
         </div>
-
-        
     `;
     document.body.appendChild(modal);
 }
@@ -212,14 +211,14 @@ function showVerificationNeeded(email) {
     
     modal.innerHTML = `
         <div class="glass-panel glass-panel-card">
-        <div class="line-neon-top"></div>
-        <div class="line-neon-bottom"></div>
+            <div class="line-neon-top"></div>
+            <div class="line-neon-bottom"></div>
             <h2 class="font-orbitron text-2xl text-white mb-3">未完成驗證</h2>
             <p class="text-white mb-2">您的帳號尚未完成Email驗證</p>
-            <p class="ext-sm text-gray-400 mb-6">請先至信箱完成驗證後再登入</p>
+            <p class="text-sm text-gray-400 mb-6">請先至信箱完成驗證後再登入</p>
             
             <div class="space-y-3">
-                <button onclick="resendVerificationEmail('${email}')" class="mb-2 btn-secondary-cyan">
+                <button onclick="resendVerificationEmail('${escapeHtml(email)}')" class="mb-2 btn-secondary-cyan">
                     重新發送驗證信
                 </button>
                 <button onclick="closeModal('verification-modal')" class="btn-primary-gradient">
@@ -252,7 +251,8 @@ async function resendVerificationEmail(email) {
     messageEl.textContent = '';
     
     try {
-        const response = await fetch(`${BASE_URL}/controllers/AuthController.php?action=resend-verification`, {
+        // ✅ 修正：使用路由 URL
+        const response = await fetch(`${BASE_URL}/auth/resend-verification`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ email })
@@ -296,7 +296,7 @@ function showDetailedError(title, content) {
     
     errorDiv.innerHTML = `
         <div style="color: red; font-weight: bold; font-size: 16px; margin-bottom: 10px;">
-            ${title}
+            ${escapeHtml(title)}
         </div>
         <pre style="background: #f5f5f5; padding: 10px; border: 1px solid #ddd; white-space: pre-wrap; word-wrap: break-word;">${escapeHtml(content)}</pre>
         <button onclick="this.parentElement.remove()" style="margin-top: 10px; padding: 10px 20px; background: red; color: white; border: none; cursor: pointer; font-weight: bold;">
@@ -315,7 +315,6 @@ function escapeHtml(text) {
 
 // 初始化
 document.addEventListener('DOMContentLoaded', function() {
-
     const style = document.createElement('style');
     style.textContent = `
         @keyframes scale-in {

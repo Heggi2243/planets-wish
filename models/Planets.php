@@ -1,4 +1,7 @@
 <?php
+namespace models;
+
+require_once __DIR__ . '/../config/Database.php';
 /**
  * Planets Model
  * 處理行星資料的table操作
@@ -26,7 +29,29 @@ class Planets
     
     public function __construct()
     {
-        $this->db = Database::connect();
+        $this->db = \Database::connect();
+    }
+
+    public function getCategory() 
+    {
+        $firstChar = strtoupper(substr($this->name, 0, 1));
+        
+        if (preg_match('/[0-1]/', $firstChar)) return 'oO1';
+        if (preg_match('/[2-4]/', $firstChar)) return 'o24';
+        if (preg_match('/[5-7]/', $firstChar)) return 'o57';
+        if (preg_match('/[8-9]/', $firstChar)) return 'o89';
+        if (preg_match('/[A-D]/', $firstChar)) return 'oAD';
+        if (preg_match('/[E]/', $firstChar)) return 'oE';
+        if (preg_match('/[F-I]/', $firstChar)) return 'oFI';
+        if (preg_match('/[J-M]/', $firstChar)) return 'oJM';
+        if (preg_match('/[N-Q]/', $firstChar)) return 'oNQ';
+        if (preg_match('/[R-U]/', $firstChar)) return 'oRU';
+        if (preg_match('/[V-W]/', $firstChar)) return 'oVW';
+        if (preg_match('/[X]/', $firstChar)) return 'oX';
+        if (preg_match('/[Y]/', $firstChar)) return 'oY';
+        if (preg_match('/[Z]/', $firstChar)) return 'oZ';
+        
+        return 'wormhole';
     }
 
      /**

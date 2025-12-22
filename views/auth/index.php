@@ -4,11 +4,13 @@
  * 已套用layout
  */
 
+
+
 // 頁面標題
-$pageTitle = 'Planets-Wish | 行星之願';
+// $pageTitle = 'Planets-Wish | 行星之願';
 
 // 引入JS
-$additionalJS = ['../../js/auth.js'];
+$additionalJS = ['/js/auth.js']; 
 
 $pageContent = function() {
 ?>

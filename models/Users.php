@@ -1,4 +1,8 @@
 <?php
+namespace models;
+
+require_once __DIR__ . '/../config/Database.php';
+
 /* Users model */
 class Users
 {
@@ -6,7 +10,7 @@ class Users
     
     public function __construct()
     {
-        $this->db = Database::connect();
+        $this->db = \Database::connect();
     }
     
     /**

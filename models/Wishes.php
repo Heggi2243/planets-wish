@@ -1,11 +1,15 @@
 <?php
+namespace models;
+
+require_once __DIR__ . '/../config/Database.php';
+
 class Wishes
 {
     private $db;
     
     public function __construct()
     {
-        $this->db = Database::connect();
+        $this->db = \Database::connect();
     }
     
     /**
