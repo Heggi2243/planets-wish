@@ -40,91 +40,103 @@ $pageContent = function() use ($showPlanet, $planetData) {
     
     <?php else: ?>
     <!-- 星球資訊區 -->
-    <div id="result-section" class="w-full max-w-5xl animate-fade-in">
-        <div class="w-full bg-gray-900/40 backdrop-blur-md border border-gray-700/50 rounded-2xl p-4 md:p-6 shadow-2xl">
+    <div id="result-section" class="w-full max-w-5xl animate-fade-in px-4">
+        <div class="w-full bg-gray-900/40 backdrop-blur-md border border-gray-700/50 rounded-2xl p-3 md:p-4 shadow-2xl">
 
-            <!-- 星球視覺 -->
-            <div class="relative w-full h-36 md:h-48 rounded-xl overflow-hidden shadow-lg border border-gray-700 group mb-4">
-                <img src="<?= htmlspecialchars($planetData['image']) ?>" 
-                     alt="<?= htmlspecialchars($planetData['name']) ?>" 
-                     class="w-full h-full object-cover transform transition-transform duration-[20s] group-hover:scale-110">
-                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
-                <div class="absolute bottom-3 left-3">
-                    <h2 class="text-2xl md:text-3xl font-display font-bold text-white mb-1 drop-shadow-lg">
-                        <?= htmlspecialchars($planetData['name']) ?>
-                    </h2>
-                    <span class="text-xs font-mono text-cyan-400 bg-cyan-900/30 px-2 py-1 rounded border border-cyan-800">
-                        <?= htmlspecialchars($planetData['type']) ?>
-                    </span>
-                </div>
-            </div>
-
-            <!-- 下方資訊區 -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div class="md:col-span-2 bg-black/20 rounded-lg p-4 border border-white/5">
-                    <p class="text-gray-300 italic text-sm leading-relaxed">
-                        <?= htmlspecialchars($planetData['description']) ?>
-                    </p>
-                </div>
-
-                <div class="bg-black/20 rounded-lg p-4 border border-white/5 space-y-3">
+            <!-- 行星標題與基本資訊 - 緊湊版 -->
+            <div class="flex items-center justify-between mb-3 pb-3 border-b border-gray-700/50">
+                <!-- 左側：標題 + 行星圖片 -->
+                <div class="flex items-center gap-4">
+                    <!-- 標題區 -->
                     <div>
-                        <span class="block text-xs text-gray-500 uppercase tracking-wider mb-1">溫度</span>
-                        <span class="text-xl font-mono text-purple-300 font-bold">
+                        <h2 class="text-xl md:text-2xl mb-4 font-display font-bold text-white drop-shadow-lg">
+                            <?= htmlspecialchars($planetData['name']) ?>
+                        </h2>
+                        <span class="text-xs font-mono mb-2 text-cyan-400 bg-cyan-900/30 px-2 py-0.5 rounded border border-cyan-800 mt-1 inline-block">
+                            今日星願
+                        </span>
+                    </div>
+                    
+                    <!-- 漂浮行星圖片 -->
+                    <div class="absolute left-30 w-32 h-32 md:w-50 md:h-50 animate-float">
+                        <img 
+                            id="planet-icon"
+                            src="../../img/<?= $planetData['category'] ?? 'wormhole' ?>.png" 
+                            alt="<?= htmlspecialchars($planetData['name']) ?>"
+                            class="w-full h-full object-contain drop-shadow-2xl"
+                            onerror="this.src='../img/wormhole.png'"
+                        />
+                    </div>
+                </div>
+                
+                <!-- 右側：屬性數據 - 橫向排列 -->
+                <div class="flex gap-3 md:gap-4 text-right">
+                    <div>
+                        <span class="block text-xs text-gray-500 uppercase">溫度</span>
+                        <span class="text-sm md:text-base font-mono text-cyan-400 font-bold">
                             <?= htmlspecialchars($planetData['temperature']) ?>
                         </span>
                     </div>
-                    <div class="border-t border-gray-700/50 pt-3">
-                        <span class="block text-xs text-gray-500 uppercase tracking-wider mb-1">距離</span>
-                        <span class="text-xl font-mono text-purple-300 font-bold">
+                    <div>
+                        <span class="block text-xs text-gray-500 uppercase">距離</span>
+                        <span class="text-sm md:text-base font-mono text-cyan-400 font-bold">
                             <?= htmlspecialchars($planetData['distance_ly']) ?> 光年
                         </span>
                     </div>
                 </div>
             </div>
 
-            <!-- 許願建議 -->
-            <div class="mt-4 flex items-center p-4 bg-gradient-to-r from-purple-900/30 to-transparent border-l-4 border-purple-500 rounded-r-lg">
-                <div class="mr-3 text-2xl">✨</div>
-                <div class="flex-1">
-                    <p class="text-xs text-purple-300 font-bold uppercase tracking-wider mb-1">星象建議</p>
-                    <p class="text-sm font-medium text-white leading-relaxed">
-                        <?= htmlspecialchars($planetData['suggestion']) ?>
+            <!-- 資訊區 - 單列 -->
+            <div class="space-y-3">
+                
+                <!-- 星球描述 -->
+                <div class="bg-black/20 rounded-lg p-3 border border-white/5">
+                    <p class="text-gray-300 text-sm leading-relaxed line-clamp-2">
+                        <?= htmlspecialchars($planetData['description']) ?>
                     </p>
                 </div>
-            </div>
 
-            <!-- 許願輸入區 -->
-            <form id="wish-form" class="mt-6 bg-black/30 rounded-xl p-4 border border-purple-500/30">
-                <label class="block text-purple-300 font-orbitron text-sm mb-2">
-                    ✨ 在此許下你的願望
-                </label>
-                <textarea 
-                    name="wish_content"
-                    id="wish-content"
-                    class="w-full bg-gray-800/50 border border-gray-600 rounded-lg p-3 text-white 
-                           focus:border-purple-500 focus:ring-2 focus:ring-purple-500/50 
-                           resize-none transition-all duration-300"
-                    rows="3"
-                    placeholder="向這顆行星傾訴你的願望..."
-                    maxlength="200"
-                    required
-                ></textarea>
-                <div class="flex justify-between items-center mt-2">
-                    <span id="char-count" class="text-xs text-gray-500">0 / 200</span>
-                    <button 
-                        type="submit"
-                        class="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600
-                               text-white font-orbitron font-bold py-2 px-6 rounded-lg
-                               transform transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-purple-500/50">
-                        送出願望
-                    </button>
+                <!-- 許願建議 -->
+                <div class="flex items-center p-3 bg-gradient-to-r from-cyan-400/50 to-transparent border-l-4 border-cyan-400 rounded-r-lg">
+                    <div class="mr-2 text-xl">✨</div>
+                    <div class="flex-1">
+                        <p class="text-xs text-white font-bold uppercase tracking-wider mb-0.5">星象建議</p>
+                        <p class="text-sm font-medium text-white line-clamp-2">
+                            <?= htmlspecialchars($planetData['suggestion']) ?>
+                        </p>
+                    </div>
                 </div>
-            </form>
 
+                <!-- 許願輸入區 - 緊湊版 -->
+                <form id="wish-form" class="bg-black/30 rounded-xl p-3 border border-cyan-400/30">
+                    <label class="block text-cyan-400 font-orbitron text-sm mb-2">
+                        ✨ 在此許下你的願望
+                    </label>
+                    <textarea 
+                        name="wish_content"
+                        id="wish-content"
+                        class="w-full bg-gray-800/50 border border-gray-600 rounded-lg p-2 text-white text-sm
+                            focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/50 
+                            resize-none transition-all duration-300"
+                        rows="2"
+                        placeholder="向這顆行星傾訴你的願望..."
+                        maxlength="200"
+                        required
+                    ></textarea>
+                    <div class="flex justify-between items-center mt-2">
+                        <span id="char-count" class="text-xs text-gray-500">0 / 200</span>
+                        <button 
+                            type="submit"
+                            class="!w-48 btn-secondary-cyan">
+                            送出願望
+                        </button>
+                    </div>
+                </form>
+
+            </div>
         </div>
     </div>
-    
+        
     <script>
     // 字數統計
     const textarea = document.getElementById('wish-content');

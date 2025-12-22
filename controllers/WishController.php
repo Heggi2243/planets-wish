@@ -163,7 +163,7 @@ class WishController extends BaseController
     private function summonRandomPlanet()
     {
         // TODO: 之後改成從資料庫隨機取得
-        // $planet = $this->planetModel->getRandomPlanet();
+        // $planet = $this->planetModel->getRandom();
         
         // 目前使用假資料
         $planets = [
