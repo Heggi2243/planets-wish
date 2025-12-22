@@ -28,31 +28,39 @@
 
 ```
 planets-wish/
+├── config/
+│   ├── config.php         # 配置檔案    
+│   ├── Database.php       # 資料庫連線類別
 ├── controllers/           # 控制器
 │   ├── AuthController.php
+│   ├── BaseController.php
 │   ├── HomeController.php
 │   └── WishController.php
 ├── models/               # 模型
-│   ├── Database.php
-│   ├── Emailservice.php  #處理email相關功能
 │   ├── Inventory.php     # 背包(玩家持有道具)
 │   ├── Items.php         # 商店商品
 │   ├── Planets.php       # 行星
 │   ├── Users.php         # 會員
 │   └── Wish.php          # 許願紀錄
 ├── views/                # 視圖
-│   ├── welcome.php
-│   └── wishHome.php
+│   ├── auth/             # 登入/註冊
+│   └── wish/             # 許願相關頁面
 ├── css/
 │   └── input.css
+├── js/
+├── layouts/              # 版面設置
+├── services/
+│   └── EmailService.php  # Email驗證信
 ├── src/
 │   └── output.css        # Tailwind編譯後的CSS
-├── lib/
-│   └── PHPMailer         # email發送工具
+├── vendor/
+│   └── composer/
+│   └── phpmailer/
+│   └── autoload.php
 ├── index.php             # 入口檔案
-├── config.php            # 設定檔
 ├── .env                  # 環境變數
 └── .gitignore
+└── verify-email.php      # Email驗證頁面
 ```
 
 ## 🗄️ 資料庫結構
