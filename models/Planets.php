@@ -33,9 +33,11 @@ class Planets
         $this->db = \Database::connect();
     }
 
-    public function getCategory() 
+    public function getCategory($planetName) 
     {
-        $firstChar = strtoupper(substr($this->name, 0, 1));
+
+         $firstChar = strtoupper(substr($planetName, 0, 1));
+
         
         if (preg_match('/[0-1]/', $firstChar)) return 'oO1';
         if (preg_match('/[2-4]/', $firstChar)) return 'o24';
@@ -53,6 +55,79 @@ class Planets
         if (preg_match('/[Z]/', $firstChar)) return 'oZ';
         
         return 'wormhole';
+    }
+
+    /**
+     * 回傳圖片名稱
+     * 這些字眼不會同時出現：
+     * hot跟cold
+     * fast跟slow
+     * far跟close
+     * heavy跟light
+     */
+
+    public function getCategoryByKeywords($keywords) 
+    {
+        // 如果傳入的是str，先轉陣列
+            if (is_string($keywords)) {
+                $keywords = array_map('trim', explode(',', $keywords));
+            }
+
+            // 1. 優先判斷多重組合
+            if (in_array('hot', $keywords) && in_array('light', $keywords)) {
+                return 'hot_light'; // 既熱又近的極端星球
+            }
+            
+            if (in_array('cold', $keywords) && in_array('heavy', $keywords)) {
+                return 'cold_heavy'; // 冰冷且巨大的氣體巨星
+            }
+
+            if (in_array('cold', $keywords) && in_array('fast', $keywords)) {
+                return 'cold_fast'; 
+            }
+
+            if (in_array('cold', $keywords) && in_array('close', $keywords)) {
+                return 'cold_close'; 
+            }
+
+            if (in_array('far', $keywords) && in_array('light', $keywords)) {
+                return 'far_light'; 
+            }
+
+            if (in_array('slow', $keywords) && in_array('heavy', $keywords)) {
+                return 'slow_heavy'; 
+            }
+
+            if (in_array('fast', $keywords) && in_array('close', $keywords)) {
+                return 'fast_close'; 
+            }
+
+            if (in_array('fast', $keywords) && in_array('far', $keywords)) {
+                return 'fast_far'; 
+            }
+
+            if (in_array('hot', $keywords) && in_array('close', $keywords)) {
+                return 'hot_close'; 
+            }
+
+            if (in_array('slow', $keywords) && in_array('cold', $keywords)) {
+                return 'slow_cold'; 
+            }
+
+
+
+            // 2. 接著判斷「單一關鍵字」
+            if (in_array('hot', $keywords)) return 'hot';
+            if (in_array('cold', $keywords)) return 'cold';
+            if (in_array('fast', $keywords)) return 'fast';
+            if (in_array('slow', $keywords)) return 'slow';
+            if (in_array('far', $keywords)) return 'far';
+            if (in_array('close', $keywords)) return 'close';
+            if (in_array('heavy', $keywords)) return 'heavy';
+            if (in_array('light', $keywords)) return 'light';
+
+            // 3. 都沒匹配到時的預設值
+            return 'wormhole';
     }
 
      /**
@@ -130,30 +205,42 @@ class Planets
 
         // 透過rpg_type隨機選一個星象建議
         $suggestionPool = [
-            //mass
+            // 對應 Mass (質量) / 力量
             '力量' => [
                 "適合許下「努力」或「突破性改變」的願望。", 
                 "這個行星有著巨大的引力，適合許下關於未來或事業重任的願望。",
-                "今年對「健康」或「理想」有甚麼規劃嗎？訴說你的星願吧。"
+                "今年對「健康」或「理想」有甚麼規劃嗎？訴說你的星願吧。",
+                "這顆行星擁有極其穩定的內核，適合祈求這份「進步」能持之以恆。",
+                "在大質量的引力加持下，許下一個關於你人生軌跡的星願吧。",
+                "強大的重力場象徵著生命力，推薦關於「提升」或「突破自我」的願望。"
             ],
-            //period
+            // 對應 Period (週期) / 敏捷
             '敏捷' => [
                 "它在軌道上疾馳，日子轉瞬即逝，適合許下貼近生活的願望。",
-                "行星轉瞬即逝的軌道，把握你的感情吧。",
-                "「最近」有甚麼迫不及待想實現的星願嗎？"
+                "行星轉瞬即逝的軌道，及時訴說你的感情。",
+                "「最近」有甚麼迫不及待想實現的星願嗎？",
+                "在快節奏的公轉中，適合許下希望「最近」就能看到回報的小確幸。",
+                "這裡的時間流速極快，適合許下關於「關係修復」或「團聚」的及時心願。",
+                "能量就像光陰奔流，適合祈求你所珍視的「愛」與「生活」。"
             ],
-            //temperature
+            // 對應 Temperature (溫度) / 幸運
             '幸運' => [
-                "熾熱的能量將加速你的夢想燃燒，祈求「好運」吧！",
-                "這裡有著巨大的引力。適合許下關於增加財富或運氣的願望。"
+                "熾熱的能量將加速你的夢想燃燒，祈求「好運」吧。",
+                "這裡有著巨大的引力。適合許下關於增加財富或運氣的願望。",
+                "星雲散發著溫暖的微光，適合許下與「幸福感」或「心理富足」相關的願望。",
+                "高溫象徵著財氣匯聚，適合許下關於「財富爆發」或「中獎運勢」的星願。",
+                "熾熱的星體會照亮陰影，適合祈求「好運」並帶走不順遂的負能量。",
+                "這是一顆閃耀著金色光芒的星球，非常適合來點「意外驚喜」。"
             ],
-            //radius
+            // 對應 Radius (半徑) / 智慧
             '智慧' => [
                 "適合許下「遠大理想」或「追尋靈魂深處」的願望。",
                 "讓願望隨星光穿越漫長星際，許下你期望的「未來」。",
-                "適合許下關於釋放壓力、工作順利的願望。"
+                "適合許下關於釋放壓力、工作順利的願望。",
+                "遼闊的行星半徑象徵寬廣的見識，適合許下關於「考試順利」或「學習進修」的願望。",
+                "在深邃的星系中，適合祈求一份讓「事業發展」更為圓滿、流暢的智慧。",
+                "寬廣的視野有利於長期規劃，適合許下關於「職業生涯」或「個人成長」的長遠星願。"
             ],
-            
         ];
 
         if (isset($suggestionPool[$rpgType])) {
@@ -171,33 +258,33 @@ class Planets
 
         // ==================== description邏輯 ====================
 
-        $keywords = [];
+        $keywordAry = [];
 
         //溫度判定
         if ($planetData['temperature'] > 800) {
-            $keywords[] = 'hot';
+            $keywordAry[] = 'hot';
         } elseif ($planetData['temperature'] < 200) {
-            $keywords[] = 'cold';
+            $keywordAry[] = 'cold';
         }
 
         if ($planetData['period'] > 10) {
-            $keywords[] = 'fast';
+            $keywordAry[] = 'fast';
         } elseif ($planetData['period'] < 0.5) {
-            $keywords[] = 'slow';
+            $keywordAry[] = 'slow';
         }
 
         //距離判定
         if ($planetData['distance_light_year'] > 1000) {
-            $keywords[] = 'far';
+            $keywordAry[] = 'far';
         } elseif ($planetData['distance_light_year'] < 50 || $planetData['semi_major_axis'] < 0.1) {
-            $keywords[] = 'close';
+            $keywordAry[] = 'close';
         }
 
         //質量判定
-        if ($planetData['host_star_mass'] >= 5 ) {
-            $keywords[] = 'heavy';
-        } elseif ($planetData['host_star_mass'] < 0.5 ){
-            $keywords[] = 'light';
+        if ($planetData['mass'] > 10 ) {
+            $keywordAry[] = 'heavy';
+        } elseif ($planetData['mass'] < 0.3 ){
+            $keywordAry[] = 'light';
         }
 
         // 定義句子池
@@ -250,10 +337,12 @@ class Planets
                     ]
         ];
 
+        $keywords = implode(',', $keywordAry);
+
         $selectedSentences = [];
 
         // foreach關鍵字標籤，從池子中抽選句子
-        foreach ($keywords as $tag) {
+        foreach ($keywordAry as $tag) {
             if (isset($descriptionPool[$tag])) {
                 //隨機選取該標籤下的一個句子索引
                 $randomIndex = array_rand($descriptionPool[$tag]);
@@ -287,7 +376,8 @@ class Planets
             'intel_stat' => round($intelStat),
             'distance_ly' => $distanceLightYear,
             'suggestion' => $suggestion,
-            'description' => $description
+            'description' => $description,
+            'keywords' => $keywords
         ];
     }
 
@@ -331,10 +421,10 @@ class Planets
 
         $sql = "INSERT INTO planets (
                     name, rpg_type,
-                    power_stat, dex_stat, luck_stat, intel_stat, 
-                    distance_ly, description, suggestion,
+                    power_stat, dex_stat, luck_stat, intel_stat,
+                    distance_ly, description, suggestion, keywords,
                     mass, radius, period, temperature, semi_major_axis
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         
         $stmt = $this->db->prepare($sql);
 
@@ -349,6 +439,7 @@ class Planets
             $stats['distance_ly'] ?? 0,
             $stats['description'],
             $stats['suggestion'],
+            $stats['keywords'],
             $data['mass'],
             $data['radius'],
             $data['period'],
@@ -366,6 +457,12 @@ class Planets
         $skipCount = 0;
 
         foreach ($planetsData as $data) {
+
+            if (!is_array($data) || empty($data['name'])) {
+                continue;
+            }
+
+
             if ($this->create($data)) {
                 $successCount++;
                 echo "成功新增: {$data['name']}\n";

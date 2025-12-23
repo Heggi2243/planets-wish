@@ -91,16 +91,16 @@ function fetchPlanetsFromAPI($apiKey, $params)
 
 // 要抓的行星
 $queries = [
-    // ['min_mass' => 1, 'max_mass' => 2],
-    ['min_radius' => 0.01, 'max_radius' => 1],
-    // ['max_mass' => 0.05, 'max_radius' => 0.5],
-    //  ['min_radius' => 0.5],
+    // ['min_mass' => 0.001, 'max_mass' => 10],
+    // ['min_radius' => 0.01, 'max_radius' => 1],
+    // ['max_mass' => 15, 'max_radius' => 10],
+    //  ['min_distance_light_year ' => 1000],
     // ['min_radius' => 1.0],
     // ['min_radius' => 1.5],
     
     // 測試高溫
-    // ['min_temperature' => 500],
-    // ['min_temperature' => 1000],
+    // ['max_period' => 0.5],
+    ['min_temperature' => 200, 'max_temperature' => 800, 'mass'>10],
     // ['min_temperature' => 1500],
     
     // 測試組合
@@ -115,8 +115,14 @@ foreach ($queries as $query) {
         $planets = fetchPlanetsFromAPI($apiKey, $query);
         
         if (!empty($planets)) {
-            $allPlanets = array_merge($allPlanets, $planets);
-            echo "成功 (找到 " . count($planets) . " 筆)\n";
+
+             // 過濾掉無效資料
+            $validPlanets = array_filter($planets, function($p) {
+                return is_array($p) && !empty($p['name']);
+            });
+            
+            $allPlanets = array_merge($allPlanets, $validPlanets);
+            echo "成功 (找到 " . count($validPlanets) . " 筆)\n";
         } else {
             echo "無資料\n";
         }

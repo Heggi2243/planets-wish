@@ -60,7 +60,10 @@ class WishController extends BaseController
         if ($showPlanet) {
             // 隨機召喚行星
             $planetData = $this->summonRandomPlanet();
-            
+            // var_dump($planetData['name']);
+            $categoryImg = $this->planetModel->getCategoryByKeywords($planetData['keywords']);
+            // var_dump($categoryImg);
+
             // 暫存到 Session（之後提交許願時使用）
             $_SESSION['current_planet'] = $planetData;
         }
@@ -68,7 +71,8 @@ class WishController extends BaseController
         $this->view('wish/create', [
             'pageTitle' => 'Planets-Wish | 邂逅行星',
             'showPlanet' => $showPlanet,
-            'planetData' => $planetData
+            'planetData' => $planetData,
+            'categoryImg' =>$categoryImg
         ]);
     }
 

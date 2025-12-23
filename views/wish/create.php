@@ -4,8 +4,8 @@
  */
 
 
-
-$pageContent = function() use ($showPlanet, $planetData) {
+var_dump($categoryImg);
+$pageContent = function() use ($showPlanet, $planetData, $categoryImg) {
 ?>
 <main class="flex flex-col items-center justify-center min-h-[calc(100vh-180px)] relative">
     
@@ -48,7 +48,7 @@ $pageContent = function() use ($showPlanet, $planetData) {
                 <!-- 左側：標題 + 行星圖片 -->
                 <div class="flex items-center gap-4">
                     <!-- 標題區 -->
-                    <div>
+                    <div class="ml-40">
                         <h2 class="text-xl md:text-2xl mb-4 font-display font-bold text-white drop-shadow-lg">
                             <?= htmlspecialchars($planetData['name']) ?>
                         </h2>
@@ -58,10 +58,10 @@ $pageContent = function() use ($showPlanet, $planetData) {
                     </div>
                     
                     <!-- 漂浮行星圖片 -->
-                    <div class="absolute left-30 w-32 h-32 md:w-50 md:h-50 animate-float">
+                    <div class="absolute -left-10 w-32 h-32 md:w-50 md:h-50 animate-float">
                         <img 
                             id="planet-icon"
-                            src="../../img/<?= $planetData['category'] ?? 'wormhole' ?>.png" 
+                            src="../../img/<?= $categoryImg ? 'planet_' . $categoryImg : 'wormhole' ?>.png"
                             alt="<?= htmlspecialchars($planetData['name']) ?>"
                             class="w-full h-full object-contain drop-shadow-2xl"
                             onerror="this.src='../img/wormhole.png'"
