@@ -163,46 +163,48 @@ class WishController extends BaseController
     private function summonRandomPlanet()
     {
         // TODO: 之後改成從資料庫隨機取得
-        // $planet = $this->planetModel->getRandom();
+        $planet = $this->planetModel->getRandom();
+
         
-        // 目前使用假資料
-        $planets = [
-            [
-                'id' => 1,
-                'name' => '紫羅星',
-                'name_en' => 'Violeta',
-                'type' => '氣態巨行星',
-                'image' => '/img/planet-purple.jpg',
-                'temperature' => '-150°C',
-                'distance_ly' => 4.2,
-                'description' => '一顆擁有夢幻紫色大氣層的神秘行星，據說能感應到旅者內心最深處的渴望。',
-                'suggestion' => '適合許下關於內心成長與自我探索的願望。'
-            ],
-            [
-                'id' => 2,
-                'name' => '碧海星',
-                'name_en' => 'Aquamaris',
-                'type' => '海洋行星',
-                'image' => '/img/planet-blue.jpg',
-                'temperature' => '22°C',
-                'distance_ly' => 8.7,
-                'description' => '表面被廣闊海洋覆蓋的蔚藍行星，象徵著情感的流動與心靈的平靜。',
-                'suggestion' => '適合許下關於情感、人際關係與心靈療癒的願望。'
-            ],
-            [
-                'id' => 3,
-                'name' => '焰陽星',
-                'name_en' => 'Pyrion',
-                'type' => '熔岩行星',
-                'image' => '/img/planet-red.jpg',
-                'temperature' => '850°C',
-                'distance_ly' => 12.3,
-                'description' => '熾熱的熔岩在地表流動，象徵著熱情、勇氣與轉變的力量。',
-                'suggestion' => '適合許下關於事業突破、勇氣挑戰與人生轉變的願望。'
-            ]
-        ];
+        // // 目前使用假資料
+        // $planets = [
+        //     [
+        //         'id' => 1,
+        //         'name' => '紫羅星',
+        //         'name_en' => 'Violeta',
+        //         'type' => '氣態巨行星',
+        //         'image' => '/img/planet-purple.jpg',
+        //         'temperature' => '-150°C',
+        //         'distance_ly' => 4.2,
+        //         'description' => '一顆擁有夢幻紫色大氣層的神秘行星，據說能感應到旅者內心最深處的渴望。',
+        //         'suggestion' => '適合許下關於內心成長與自我探索的願望。'
+        //     ],
+        //     [
+        //         'id' => 2,
+        //         'name' => '碧海星',
+        //         'name_en' => 'Aquamaris',
+        //         'type' => '海洋行星',
+        //         'image' => '/img/planet-blue.jpg',
+        //         'temperature' => '22°C',
+        //         'distance_ly' => 8.7,
+        //         'description' => '表面被廣闊海洋覆蓋的蔚藍行星，象徵著情感的流動與心靈的平靜。',
+        //         'suggestion' => '適合許下關於情感、人際關係與心靈療癒的願望。'
+        //     ],
+        //     [
+        //         'id' => 3,
+        //         'name' => '焰陽星',
+        //         'name_en' => 'Pyrion',
+        //         'type' => '熔岩行星',
+        //         'image' => '/img/planet-red.jpg',
+        //         'temperature' => '850°C',
+        //         'distance_ly' => 12.3,
+        //         'description' => '熾熱的熔岩在地表流動，象徵著熱情、勇氣與轉變的力量。',
+        //         'suggestion' => '適合許下關於事業突破、勇氣挑戰與人生轉變的願望。'
+        //     ]
+        // ];
         
-        return $planets[array_rand($planets)];
+        // return $planets[array_rand($planets)];
+        return $planet;
     }
 
     /**

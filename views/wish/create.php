@@ -74,7 +74,7 @@ $pageContent = function() use ($showPlanet, $planetData) {
                     <div>
                         <span class="block text-xs text-gray-500 uppercase">溫度</span>
                         <span class="text-sm md:text-base font-mono text-cyan-400 font-bold">
-                            <?= htmlspecialchars($planetData['temperature']) ?>
+                            <?= htmlspecialchars($planetData['temperature']??'未知') ?>
                         </span>
                     </div>
                     <div>
