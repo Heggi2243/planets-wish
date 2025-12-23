@@ -8,6 +8,9 @@
 require_once 'config/Database.php';
 require_once 'models/Planets.php';
 
+use models\Planets;
+
+
 // 載入環境變數
 if (file_exists(__DIR__ . '/.env')) {
     $env = parse_ini_file(__DIR__ . '/.env');
@@ -22,13 +25,11 @@ if (empty($apiKey)) {
 }
 
 // 連接資料庫
-// try {
-    $database = new Database();
-    $db = $database->getConnection();
-    $planetModel = new Planets($db);
-// } catch (Exception $e) {
-//     die("資料庫連接失敗: " . $e->getMessage() . "\n");
-// }
+try {
+    $planetModel = new Planets();  
+} catch (Exception $e) {
+    die("資料庫連接失敗: " . $e->getMessage() . "\n");
+}
 
 /**
  * 從API Ninjas抓取行星資料

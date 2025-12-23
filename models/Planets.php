@@ -2,6 +2,7 @@
 namespace models;
 
 require_once __DIR__ . '/../config/Database.php';
+
 /**
  * Planets Model
  * 處理行星資料的table操作
@@ -55,10 +56,11 @@ class Planets
     }
 
      /**
-     * 根據API資料計算RPG屬性
+     * 根據API資料計算RPG屬性、拼接description、suggestion欄位內容
      */
     private function calculateRPGStats($planetData)
     {
+        
         // 取得行星的各項數值
         $mass = $planetData['mass'] ?? 0.001;
         $radius = $planetData['radius'] ?? 0;
@@ -124,13 +126,168 @@ class Planets
         ];
         $rpgType = array_keys($stats, max($stats))[0];
 
+        // ==================== suggestion邏輯 ====================
+
+        // 透過rpg_type隨機選一個星象建議
+        $suggestionPool = [
+            //mass
+            '力量' => [
+                "適合許下「努力」或「突破性改變」的願望。", 
+                "這個行星有著巨大的引力，適合許下關於未來或事業重任的願望。",
+                "今年對「健康」或「理想」有甚麼規劃嗎？訴說你的星願吧。"
+            ],
+            //period
+            '敏捷' => [
+                "它在軌道上疾馳，日子轉瞬即逝，適合許下貼近生活的願望。",
+                "行星轉瞬即逝的軌道，把握你的感情吧。",
+                "「最近」有甚麼迫不及待想實現的星願嗎？"
+            ],
+            //temperature
+            '幸運' => [
+                "熾熱的能量將加速你的夢想燃燒，祈求「好運」吧！",
+                "這裡有著巨大的引力。適合許下關於增加財富或運氣的願望。"
+            ],
+            //radius
+            '智慧' => [
+                "適合許下「遠大理想」或「追尋靈魂深處」的願望。",
+                "讓願望隨星光穿越漫長星際，許下你期望的「未來」。",
+                "適合許下關於釋放壓力、工作順利的願望。"
+            ],
+            
+        ];
+
+        if (isset($suggestionPool[$rpgType])) {
+    
+            //從屬性對應的陣列隨機取出一個Key
+            $randomKey = array_rand($suggestionPool[$rpgType]);
+            
+            // 根據索引取得該句話，塞進$suggestion變數
+            $suggestion = $suggestionPool[$rpgType][$randomKey];
+
+        } else {
+
+            $suggestion = "充滿神祕氣息的星球，適合訴說你內心深處最純粹的渴望。";
+        }
+
+        // ==================== description邏輯 ====================
+
+        $keywords = [];
+
+        //溫度判定
+        if ($planetData['temperature'] > 800) {
+            $keywords[] = 'hot';
+        } elseif ($planetData['temperature'] < 200) {
+            $keywords[] = 'cold';
+        }
+
+        if ($planetData['period'] > 10) {
+            $keywords[] = 'fast';
+        } elseif ($planetData['period'] < 0.5) {
+            $keywords[] = 'slow';
+        }
+
+        //距離判定
+        if ($planetData['distance_light_year'] > 1000) {
+            $keywords[] = 'far';
+        } elseif ($planetData['distance_light_year'] < 50 || $planetData['semi_major_axis'] < 0.1) {
+            $keywords[] = 'close';
+        }
+
+        //質量判定
+        if ($planetData['host_star_mass'] >= 5 ) {
+            $keywords[] = 'heavy';
+        } elseif ($planetData['host_star_mass'] < 0.5 ){
+            $keywords[] = 'light';
+        }
+
+        // 定義句子池
+        $descriptionPool = [
+            'hot'   => [
+                    "地表翻騰著不穩定的熱浪", 
+                    "這是一顆被永恆烈焰包圍的星球",
+                    "大氣中充滿了沸騰的能量感", 
+                    "地表溫度極高，岩漿流淌在乾涸的海床", 
+                    "這是一顆永不熄滅的恆星之子"
+                    ],
+            'cold'  => [
+                    "寂靜的冰霜覆蓋了所有文明遺跡", 
+                    "這顆星球在絕對零度的邊緣徘徊",
+                    "這裡被冰封在無盡的寒冬中",
+                    "地表覆蓋著氮冰，靜謐而冷冽",
+                    "微弱的星光照耀著這片極寒荒野", 
+                    "寒氣穿透了太空艙的隔熱層"
+                    ],
+            'fast'  => [
+                    "這顆行星像是在星海中失控的賽車，瘋狂地繞著母恆星旋轉",
+                    "這裡的一年僅僅是地球上的數個小時，時間的流逝快得讓人眩暈",
+                    "光陰在天際線忽明忽暗，白晝與黑夜的更迭快如眨眼"
+                    ],
+            'slow' => [
+                    "光陰在此凝固成了琥珀，這顆行星以一種近乎永恆的緩慢姿態漫步",
+                    "這裡的一季比地球上的文明興衰還要漫長，季節的輪轉是神話級的跨度",
+                    "在深空中孤獨地完成漫長的長征"
+                    ],
+            'far'  => [
+                    "它的存在僅僅是夜空中的一抹微光", 
+                    "它是宇宙邊緣的孤獨守望者", 
+                    "距離地球如此遙遠，時間彷彿在此失去了意義"
+                    ],
+            'close' => [
+                    "它是地球的鄰居", 
+                    "這顆行星的影子在望遠鏡中清晰可見", 
+                    "僅需幾年的航行，我們就能抵達它的懷抱",
+                    "緊貼著恆星運行，承受最強光芒"
+                    ],
+            'heavy' => [
+                    "這顆星球擁有令人窒息的引力，連光線經過時都會微微彎曲",
+                    "大氣被自身的重量壓成了如液體般的濃稠感，每一步都踏在厚實的時空褶皺上",
+                    "這是一個無比沉穩的世界，巨大的質量讓它成為了星系中不可撼動的錨點"
+            ],
+            'light' => [
+                    "這裡的引力微弱得如同夢境，一陣強風彷彿就能將地表的沙塵吹向宇宙",
+                    "這顆星球輕盈得像是一顆漂浮在星海中的肥皂泡，充滿了靈動與自由",
+                    "行走在荒原之上，身體輕盈得彷彿隨時能躍過那些纖細的山脈"
+                    ]
+        ];
+
+        $selectedSentences = [];
+
+        // foreach關鍵字標籤，從池子中抽選句子
+        foreach ($keywords as $tag) {
+            if (isset($descriptionPool[$tag])) {
+                //隨機選取該標籤下的一個句子索引
+                $randomIndex = array_rand($descriptionPool[$tag]);
+                //存入暫存陣列
+                $selectedSentences[] = $descriptionPool[$tag][$randomIndex];
+            }
+        }
+
+        $description = "";
+
+        if (!empty($selectedSentences)) {
+
+            // 使用「，」連接所有句子
+            $description = implode('，', $selectedSentences);
+            
+            // 確保結尾是句號(先去掉末尾可能存在的標點，再統一補上句號)
+            // 使用mb_substr處理多位元字元比較保險
+            $description .= "。";
+        } else {
+            // 防呆
+            $description = "這是一顆未知的行星，正靜靜地等待著旅人的造訪。";
+        }
+
+
+
         return [
             'rpg_type' => $rpgType,
             'power_stat' => round($powerStat),
             'dex_stat' => round($dexStat),
             'luck_stat' => round($luckStat),
             'intel_stat' => round($intelStat),
-            'distance_ly' => $distanceLightYear
+            'distance_ly' => $distanceLightYear,
+            'suggestion' => $suggestion,
+            'description' => $description
         ];
     }
 
@@ -147,103 +304,6 @@ class Planets
     //     "host_star_temperature": 6000
     // }
     // ]
-
-    /**
-     * 以隨機的方式為description、suggestion寫入內容
-     */
-    public function generateEnhanced($data) {
-        
-        // 1. 初始化標籤陣列
-        $keywords = [];
-
-        // 溫度判定
-        if ($data['host_star_temperature'] > 1000) {
-            $keywords[] = 'hot';
-        } elseif ($data['host_star_temperature'] < 200) {
-            $keywords[] = 'cold';
-        }
-
-        if ($data['period'] < 5) {
-            $keywords[] = 'fast';
-            // return "行星轉瞬即逝的軌道，適合祈求「即時的好運與轉機」。";
-        }
-
-        // 距離判定
-        if ($data['distance_light_year'] > 1000) {
-            $keywords[] = 'far';
-            // "跨越千年的孤寂星光，適合許下「遠大的理想與追尋」。";
-        } elseif ($data['distance_light_year'] < 50) {
-            // "它是地球的鄰居，適合許下貼近生活、觸手可及的願望。";
-            $keywords[] = 'close';
-        }
-
-        // 質量判定 (假設大於 2 為 heavy)
-        if ($data['host_star_mass'] > 5 ) {
-            $keywords[] = 'heavy';
-            // 這裡有著巨大的引力。適合許下關於增加財富、提升影響力或事業重任的願望。
-        } elseif ($data['host_star_mass'] < 0.5 ){
-            $keywords[] = 'light';
-            // 這裡引力極小，輕盈無負擔。適合許下關於釋放壓力、重獲自由或旅行順利的願望。
-        }
-
-        if ($data['semi_major_axis'] < 0.1) {
-            // 緊貼著恆星運行，承受最強光芒。適合許下關於獲得關注、名聲顯赫或成為焦點的願望。
-        }
-
-        // 2. 定義句子池
-        $descriptionPool = [
-            'hot'   => [
-                    "地表翻騰著不穩定的熱浪。", "這是一顆被永恆烈焰包圍的星球。",
-                    "大氣中充滿了沸騰的能量感。", "地表溫度極高，岩漿流淌在乾涸的海床。", 
-                    "這是一顆永不熄滅的恆星之子。"
-                ],
-            'cold'  => ["寂靜的冰霜覆蓋了所有文明遺跡。", "這顆星球在絕對零度的邊緣徘徊。","這裡被冰封在無盡的寒冬中。",
-                    "地表覆蓋著氮冰，靜謐而冷冽。",
-                    "微弱的星光照耀著這片極寒荒野。", "寒氣穿透了太空艙的隔熱層。"],
-                    'normal' => [
-                    "氣候溫和，展現出難得的穩定。",
-                    "這是一個平衡且溫暖的世界。"
-                    ],
-                    'fast' => "它在軌道上疾馳，日子轉瞬即逝。",
-                'slow' => "時間在這裡緩慢流動，一年如同一輩子那樣漫長。",
-            'far'   => ["它的存在僅僅是夜空中的一抹微光。", "它是宇宙邊緣的孤獨守望者。", "距離地球如此遙遠，時間彷彿在此失去了意義。"],
-            'close' => ["它是人類在深空中的第一個鄰居。", "這顆行星的影子在望遠鏡中清晰可見。", "僅需幾年的航行，我們就能抵達它的懷抱。"]
-        ];
-
-        $suggestionPool = [
-            'hot'   => ["適合許下「充滿動力」或「突破性改變」的願望。", "熾熱的能量將加速你的夢想燃燒。"],
-            'far'   => ["適合許下「遠大理想」或「追尋靈魂深處」的願望。", "讓願望隨星光穿越漫長星際。"],
-            'heavy' => ["厚重的質量適合祈求「穩定」或「財富積累」。"]
-        ];
-
-        // 預設值描述
-        // "這是一顆充滿神祕氣息的星球，適合訴說你內心深處最純粹的渴望。";
-
-        // 3. 根據採集到的 $keywords 抽取句子
-        $finalDescriptions = [];
-        $finalSuggestions = [];
-
-        // 要改成隨機抽幾個並且組裝標點符號
-        foreach ($keywords as $tag) {
-            
-            if (isset($descriptionPool[$tag])) {
-                $finalDescriptions[] = $descriptionPool[$tag][array_rand($descriptionPool[$tag])];
-            }
-            
-
-            if (isset($suggestionPool[$tag])) {
-                $finalSuggestions[] = $suggestionPool[$tag][array_rand($suggestionPool[$tag])];
-            }
-        }
-
-        // 4. 輸出結果(如果沒有匹配到標籤，給予預設值
-        return [
-            'description' => !empty($finalDescriptions) ? implode(" ", $finalDescriptions) : "這是一顆充滿神祕色彩的未知行星。",
-            'suggestion'  => !empty($finalSuggestions) ? implode(" ", $finalSuggestions) : "跟隨你的直覺，對著星空訴說你的渴望。"
-        ];
-    }
-
-
 
     /**
      * 檢查行星是否已存在
@@ -287,8 +347,8 @@ class Planets
             $stats['luck_stat'] ?? 0,
             $stats['intel_stat'] ?? 0,
             $stats['distance_ly'] ?? 0,
-            // description
-            // suggestion
+            $stats['description'],
+            $stats['suggestion'],
             $data['mass'],
             $data['radius'],
             $data['period'],
