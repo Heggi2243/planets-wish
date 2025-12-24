@@ -175,7 +175,7 @@ $pageContent = function() use ($showPlanet, $planetData, $categoryImg) {
                 const text = await response.text();
                 console.log('後端回應:', text);
                 
-                const result = await response.json();
+                const result = JSON.parse(text);
                
                 
                 if (result.success) {

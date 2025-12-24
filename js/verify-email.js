@@ -31,7 +31,7 @@ async function resendVerification(e) {
             body: JSON.stringify({ email })
         });
         
-        const result = await response.json();
+        const result = JSON.parse(text);
         
         message.textContent = result.message;
         message.className = result.success ? 

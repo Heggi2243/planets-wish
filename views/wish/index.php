@@ -48,8 +48,8 @@ $pageContent = function() use ($hasWishedToday, $latestWish, $successMessage, $e
     
     <!-- 許願紀錄 -->
     <a href="/planets-wish/wish/record"
-        class="group absolute top-30 left-10 w-24 h-24 md:w-64 md:h-64 z-20 animate-float transition-transform duration-300 cursor-pointer flex flex-col items-center text-decoration-none">
-        <div class="w-24 h-24 md:w-56 md:h-56">
+        class="group absolute top-30 left-10 w-32 h-32 md:w-64 md:h-64 z-20 animate-float transition-transform duration-300 cursor-pointer flex flex-col items-center text-decoration-none">
+        <div class="w-32 h-32 md:w-56 md:h-56">
             <img
                 src="../../img/satellite.png"
                 class="w-full h-full object-contain transform transition-all duration-300 
@@ -101,7 +101,7 @@ $pageContent = function() use ($hasWishedToday, $latestWish, $successMessage, $e
                 <?php endif; ?>
             </div>
             <p class="text-center text-gray-400 mt-8 animate-bounce text-sm">
-                <?= $hasWishedToday ? '今天已許願，明天再來' : '今天會與哪個行星邂逅呢？點擊許願' ?>
+                <?= $hasWishedToday ? '今天已許願，明日再與星辰相見' : '今天會與哪個行星邂逅呢？點擊許願' ?>
             </p>
         </div>
         
@@ -109,7 +109,7 @@ $pageContent = function() use ($hasWishedToday, $latestWish, $successMessage, $e
 
     <!-- 流星裝飾 -->
     <div class="absolute bottom-0 w-full">
-        <div class="absolute bottom-20 right-10 w-32 h-32 md:w-56 md:h-56 z-20 animate-float">
+        <div class="absolute bottom-20 right-30 w-32 h-32 md:w-56 md:h-56 z-20 animate-float">
             <img src="../../img/meteor.png" class="w-full h-full object-contain drop-shadow-xl" />
         </div>
 
