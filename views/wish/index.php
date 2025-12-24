@@ -6,16 +6,48 @@
 
 $pageScript = ['../../js/wishIndex.js'];
 
-
-$pageContent = function()  use ($hasWishedToday) {
+$pageContent = function() use ($hasWishedToday, $latestWish, $successMessage, $errorMessage) {
 ?>
-    <!-- 綠色行星裝飾 -->
-    <div class="absolute top-20 right-10 md:right-1/4 w-24 h-24 md:w-32 md:h-32 z-20 animate-float">
-        <img src="../../img/planet2.png" class="w-full h-full object-contain drop-shadow-xl transform" />
+    <!-- 成功訊息提示 -->
+    <?php if ($successMessage): ?>
+    <div id="success-toast" class="fixed top-20 right-4 z-50 glass-panel rounded-lg p-4 shadow-2xl animate-slide-in-right">
+        <div class="flex items-center gap-3">
+            <span class="text-2xl">✨</span>
+            <p class="text-white"><?= htmlspecialchars($successMessage) ?></p>
+        </div>
+    </div>
+    <script>
+        setTimeout(() => {
+            document.getElementById('success-toast')?.remove();
+        }, 5000);
+    </script>
+    <?php endif; ?>
+
+    <!-- 綠色行星裝飾 + 倒數計時 -->
+    <div class="absolute top-20 right-10 md:right-1/4 z-20 flex flex-col items-center">
+        <!-- 行星圖片 -->
+        <div class="w-24 h-24 md:w-32 md:h-32 animate-float">
+            <img src="../../img/planet2.png" class="w-full h-full object-contain drop-shadow-xl transform" />
+        </div>
+        
+        <!-- 倒數計時（只在已許願時顯示） -->
+        <?php if ($hasWishedToday && $latestWish): ?>
+        <div class="mt-4 text-center animate-fade-in">
+            <p class="text-xs text-white mb-2">行星抵達倒數</p>
+            <div id="countdown" 
+                 class="glass-panel rounded-lg px-4 py-2 font-mono text-cyan-400 font-bold text-sm md:text-base"
+                 data-arrival="<?= htmlspecialchars($latestWish['arrival_at']) ?>">
+                計算中...
+            </div>
+            <p class="text-xs text-white mt-2">
+                <?= htmlspecialchars($latestWish['planet_name']) ?>
+            </p>
+        </div>
+        <?php endif; ?>
     </div>
     
     <!-- 許願紀錄 -->
-    <a href="/wish/record"
+    <a href="/planets-wish/wish/record"
         class="group absolute top-30 left-10 w-24 h-24 md:w-64 md:h-64 z-20 animate-float transition-transform duration-300 cursor-pointer flex flex-col items-center text-decoration-none">
         <div class="w-24 h-24 md:w-56 md:h-56">
             <img
@@ -38,14 +70,14 @@ $pageContent = function()  use ($hasWishedToday) {
     <main class="container mx-auto px-4 flex flex-col items-center justify-center relative z-10" 
           style="min-height: calc(100vh - 180px); max-height: calc(100vh - 180px);">
         
-        <!-- 1. 核心互動區：傳送門  -->
+        <!-- 核心互動區：傳送門 -->
         <div id="portal-container" class="relative transition-all duration-700 ease-in-out">
             <div class="relative group">
                 <!-- 傳送門外環動畫 -->
                 <div class="absolute -inset-1 bg-gradient-to-r from-orange-500 via-yellow-500 to-orange-600 rounded-full blur opacity-75 group-hover:opacity-100 transition duration-1000 group-hover:duration-200 animate-pulse-fast"></div>
                 
                 <?php if ($hasWishedToday): ?>
-                    <!-- 今天已許願: 彈出提示 -->
+                    <!-- 今天已許願: 點擊顯示提示 -->
                     <button id="summon-btn" class="relative w-48 h-48 md:w-64 md:h-64 rounded-full flex items-center justify-center portal-glow animate-float overflow-visible cursor-pointer">
                         <div class="absolute inset-0 flex items-center justify-center">
                             <img 
@@ -57,7 +89,7 @@ $pageContent = function()  use ($hasWishedToday) {
                     </button>
                 <?php else: ?>
                     <!-- 今天未許願: 跳轉 -->
-                    <a href="/wish/create" class="relative w-48 h-48 md:w-64 md:h-64 rounded-full flex items-center justify-center portal-glow animate-float overflow-visible block">
+                    <a href="/planets-wish/wish/create" class="relative w-48 h-48 md:w-64 md:h-64 rounded-full flex items-center justify-center portal-glow animate-float overflow-visible block">
                         <div class="absolute inset-0 flex items-center justify-center">
                             <img 
                                 src="../../img/planet3.png" 
@@ -68,7 +100,9 @@ $pageContent = function()  use ($hasWishedToday) {
                     </a>
                 <?php endif; ?>
             </div>
-            <p class="text-center text-gray-400 mt-8 animate-bounce text-sm">今天會與哪個行星邂逅呢？點擊許願</p>
+            <p class="text-center text-gray-400 mt-8 animate-bounce text-sm">
+                <?= $hasWishedToday ? '今天已許願，明天再來' : '今天會與哪個行星邂逅呢？點擊許願' ?>
+            </p>
         </div>
         
     </main>
@@ -85,13 +119,11 @@ $pageContent = function()  use ($hasWishedToday) {
     </div>
 
     <?php if ($hasWishedToday): ?>
-    <!-- 背景遮罩 -->
-    <div id="daily-limit-modal" class=" fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center">
+    <!-- 背景遮罩(預設隱藏) -->
+    <div id="daily-limit-modal" class="hidden fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center">
         <!-- 提示框 -->
         <div class="glass-panel rounded-2xl p-8 max-w-md mx-4 shadow-2xl animate-fade-in">
             <div class="text-center mb-6">
-                <div class="inline-block rounded-full mb-4">
-                </div>
                 <h3 class="text-2xl font-orbitron font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-400">
                     今日已許願
                 </h3>
@@ -106,6 +138,52 @@ $pageContent = function()  use ($hasWishedToday) {
             </button>
         </div>
     </div>
+    
+    <script>
+    //點傳送門時顯示提示框
+    document.getElementById('summon-btn')?.addEventListener('click', function() {
+        document.getElementById('daily-limit-modal').classList.remove('hidden');
+    });
+    
+    // 點「我知道了」關閉提示框
+    document.getElementById('close-modal-btn')?.addEventListener('click', function() {
+        document.getElementById('daily-limit-modal').classList.add('hidden');
+    });
+    </script>
+    <?php endif; ?>
+
+    <!-- 倒數計時 JavaScript -->
+    <?php if ($hasWishedToday && $latestWish): ?>
+    <script>
+    (function() {
+        const countdownEl = document.getElementById('countdown');
+        const arrivalTime = new Date(countdownEl.dataset.arrival).getTime();
+        
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const distance = arrivalTime - now;
+            
+            if (distance < 0) {
+                countdownEl.innerHTML = '<span class="text-green-400">✨ 已抵達</span>';
+                return;
+            }
+            
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+            
+            let timeStr = '';
+            if (days > 0) timeStr += `${days}天 `;
+            timeStr += `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            
+            countdownEl.textContent = timeStr;
+        }
+        
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
+    })();
+    </script>
     <?php endif; ?>
 <?php
 };

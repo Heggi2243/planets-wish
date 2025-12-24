@@ -4,7 +4,6 @@
  * 入口檔案:處理所有請求
  */
 
-
 session_start();
 
 require_once __DIR__ . '/config/config.php';
@@ -23,6 +22,10 @@ if ($uri === '' || $uri === '/') {
     $uri = '/auth';
 }
 
+$segments = array_filter(explode('/', trim($uri, '/')));
+$segments = array_values($segments); // 重新索引
+
+// 定義路由表
 $routes = [
     // 驗證相關
     'GET:/auth' => ['AuthController', 'index'],
@@ -34,7 +37,7 @@ $routes = [
     // 許願相關
     'GET:/wish' => ['WishController', 'index'],
     'GET:/wish/create' => ['WishController', 'create'],
-    'POST:/wish/summon' => ['WishController', 'store'],
+    'POST:/wish/store' => ['WishController', 'store'],  // ← 改成 /wish/store
     'GET:/wish/record' => ['WishController', 'record'],
 ];
 
@@ -47,7 +50,6 @@ error_log("原始 URI: " . $_SERVER['REQUEST_URI']);
 error_log("處理後 URI: {$uri}");
 error_log("HTTP Method: {$method}");
 error_log("路由 Key: {$routeKey}");
-error_log("__DIR__: " . __DIR__);
 
 if (isset($routes[$routeKey])) {
     [$controllerName, $action] = $routes[$routeKey];

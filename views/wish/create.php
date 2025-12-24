@@ -4,7 +4,7 @@
  */
 
 
-var_dump($categoryImg);
+// var_dump($categoryImg);
 $pageContent = function() use ($showPlanet, $planetData, $categoryImg) {
 ?>
 <main class="flex flex-col items-center justify-center min-h-[calc(100vh-180px)] relative">
@@ -120,17 +120,21 @@ $pageContent = function() use ($showPlanet, $planetData, $categoryImg) {
                             resize-none transition-all duration-300"
                         rows="2"
                         placeholder="向這顆行星傾訴你的願望..."
-                        maxlength="200"
+                        maxlength="300"
                         required
                     ></textarea>
                     <div class="flex justify-between items-center mt-2">
-                        <span id="char-count" class="text-xs text-gray-500">0 / 200</span>
+                        <span id="char-count" class="text-xs text-gray-500">0 / 300</span>
                         <button 
                             type="submit"
+                            id="submit-btn"
                             class="!w-48 btn-secondary-cyan">
                             送出願望
                         </button>
                     </div>
+                    <!-- 錯誤訊息 -->
+                     <div id="error-message" class="hidden mt-2 text-red-400 text-sm"></div>
+
                 </form>
 
             </div>
@@ -138,40 +142,61 @@ $pageContent = function() use ($showPlanet, $planetData, $categoryImg) {
     </div>
         
     <script>
-    // 字數統計
-    const textarea = document.getElementById('wish-content');
-    const charCount = document.getElementById('char-count');
-    
-    textarea.addEventListener('input', function() {
-        charCount.textContent = `${this.value.length} / 200`;
-    });
+        // 字數統計
+        const textarea = document.getElementById('wish-content');
+        const charCount = document.getElementById('char-count');
 
-    // 處理表單提交
-    document.getElementById('wish-form').addEventListener('submit', async function(e) {
-        e.preventDefault();
-        
-        const wishContent = textarea.value;
-        
-        try {
-            const response = await fetch('/planets-wish/wish/store', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ wish_content: wishContent })
-            });
+        textarea.addEventListener('input', function() {
+            charCount.textContent = `${this.value.length} / 300`;
+        });
+
+        // 處理表單提交
+        document.getElementById('wish-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
             
-            const result = await response.json();
+            const wishContent = textarea.value.trim();
+            const submitBtn = document.getElementById('submit-btn');
+            const errorMsg = document.getElementById('error-message');
             
-            if (result.success) {
-                alert(result.message);
-                window.location.href = '/planets-wish/wish';
-            } else {
-                alert(result.message);
+            // 隱藏之前的錯誤訊息
+            errorMsg.classList.add('hidden');
+            
+            // 按鈕 loading 狀態
+            submitBtn.disabled = true;
+            submitBtn.textContent = '送出中...';
+            
+            try {
+                const response = await fetch('/planets-wish/wish/store', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ wish_content: wishContent })
+                });
+
+                const text = await response.text();
+                console.log('後端回應:', text);
+                
+                const result = await response.json();
+               
+                
+                if (result.success) {
+                    // 顯示訊息後重導向
+                    alert(result.message);
+                    window.location.href = '/planets-wish/wish';
+                } else {
+                    // 顯示錯誤，留在原畫面
+                    errorMsg.textContent = result.message;
+                    errorMsg.classList.remove('hidden');
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = '送出願望';
+                }
+            } catch (error) {
+                console.error('送出失敗:', error);
+                errorMsg.textContent = '系統錯誤，請稍後再試';
+                errorMsg.classList.remove('hidden');
+                submitBtn.disabled = false;
+                submitBtn.textContent = '送出願望';
             }
-        } catch (error) {
-            console.error('送出失敗:', error);
-            alert('系統錯誤');
-        }
-    });
+        });
     </script>
     <?php endif; ?>
 </main>

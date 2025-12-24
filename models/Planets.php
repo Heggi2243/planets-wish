@@ -33,29 +33,6 @@ class Planets
         $this->db = \Database::connect();
     }
 
-    public function getCategory($planetName) 
-    {
-
-         $firstChar = strtoupper(substr($planetName, 0, 1));
-
-        
-        if (preg_match('/[0-1]/', $firstChar)) return 'oO1';
-        if (preg_match('/[2-4]/', $firstChar)) return 'o24';
-        if (preg_match('/[5-7]/', $firstChar)) return 'o57';
-        if (preg_match('/[8-9]/', $firstChar)) return 'o89';
-        if (preg_match('/[A-D]/', $firstChar)) return 'oAD';
-        if (preg_match('/[E]/', $firstChar)) return 'oE';
-        if (preg_match('/[F-I]/', $firstChar)) return 'oFI';
-        if (preg_match('/[J-M]/', $firstChar)) return 'oJM';
-        if (preg_match('/[N-Q]/', $firstChar)) return 'oNQ';
-        if (preg_match('/[R-U]/', $firstChar)) return 'oRU';
-        if (preg_match('/[V-W]/', $firstChar)) return 'oVW';
-        if (preg_match('/[X]/', $firstChar)) return 'oX';
-        if (preg_match('/[Y]/', $firstChar)) return 'oY';
-        if (preg_match('/[Z]/', $firstChar)) return 'oZ';
-        
-        return 'wormhole';
-    }
 
     /**
      * 回傳圖片名稱
@@ -73,21 +50,62 @@ class Planets
                 $keywords = array_map('trim', explode(',', $keywords));
             }
 
-            // 1. 優先判斷多重組合
+            // 優先判斷多重組合
+
+            if (in_array('cold', $keywords) && in_array('fast', $keywords) && in_array('far', $keywords) && in_array('light', $keywords)) {
+                return 'cold_fast_far_light';
+            }
+
+            if (in_array('cold', $keywords) && in_array('close', $keywords) && in_array('light', $keywords)) {
+                return 'cold_close_light';
+            }
+
+            if (in_array('cold', $keywords) && in_array('fast', $keywords) && in_array('close', $keywords)) {
+                return 'cold_fast_close';
+            }
+
+            if (in_array('hot', $keywords) && in_array('slow', $keywords) && in_array('close', $keywords) && in_array('light', $keywords)) {
+                return 'hot_slow_close_light'; 
+            }
+
+            if (in_array('hot', $keywords) && in_array('slow', $keywords) && in_array('close', $keywords) ) {
+                return 'hot_slow_close'; 
+            }
+
+            if (in_array('slow', $keywords) && in_array('far', $keywords)) {
+                return 'slow_far'; 
+            }
+
             if (in_array('hot', $keywords) && in_array('light', $keywords)) {
-                return 'hot_light'; // 既熱又近的極端星球
+                return 'hot_light'; 
+            }
+
+            if (in_array('hot', $keywords) && in_array('close', $keywords)) {
+                return 'hot_close'; 
+            }
+
+            if (in_array('hot', $keywords) && in_array('heavy', $keywords)) {
+                return 'hot_heavy';
+            }
+
+            if (in_array('hot', $keywords) && in_array('far', $keywords)) {
+                return 'hot_far';
             }
             
             if (in_array('cold', $keywords) && in_array('heavy', $keywords)) {
-                return 'cold_heavy'; // 冰冷且巨大的氣體巨星
+                return 'cold_heavy'; 
+            }
+
+            if (in_array('cold', $keywords) && in_array('close', $keywords)) {
+                return 'cold_close'; 
             }
 
             if (in_array('cold', $keywords) && in_array('fast', $keywords)) {
                 return 'cold_fast'; 
             }
 
-            if (in_array('cold', $keywords) && in_array('close', $keywords)) {
-                return 'cold_close'; 
+            if (in_array('fast', $keywords) && in_array('far', $keywords)) {
+                return 'fast_far'; 
             }
 
             if (in_array('far', $keywords) && in_array('light', $keywords)) {
@@ -98,25 +116,22 @@ class Planets
                 return 'slow_heavy'; 
             }
 
-            if (in_array('fast', $keywords) && in_array('close', $keywords)) {
-                return 'fast_close'; 
-            }
-
-            if (in_array('fast', $keywords) && in_array('far', $keywords)) {
-                return 'fast_far'; 
-            }
-
-            if (in_array('hot', $keywords) && in_array('close', $keywords)) {
-                return 'hot_close'; 
-            }
-
             if (in_array('slow', $keywords) && in_array('cold', $keywords)) {
                 return 'slow_cold'; 
             }
 
+            if (in_array('slow', $keywords) && in_array('close', $keywords)) {
+                return 'slow_close'; 
+            }
+
+            if (in_array('fast', $keywords) && in_array('close', $keywords)) {
+                return 'fast_close'; 
+            }
+            
 
 
-            // 2. 接著判斷「單一關鍵字」
+
+            // 判斷單一關鍵字
             if (in_array('hot', $keywords)) return 'hot';
             if (in_array('cold', $keywords)) return 'cold';
             if (in_array('fast', $keywords)) return 'fast';
@@ -126,7 +141,7 @@ class Planets
             if (in_array('heavy', $keywords)) return 'heavy';
             if (in_array('light', $keywords)) return 'light';
 
-            // 3. 都沒匹配到時的預設值
+            // 都沒匹配到時的預設值
             return 'wormhole';
     }
 
@@ -263,27 +278,27 @@ class Planets
         //溫度判定
         if ($planetData['temperature'] > 800) {
             $keywordAry[] = 'hot';
-        } elseif ($planetData['temperature'] < 200) {
+        } elseif ($planetData['temperature'] != NULL && $planetData['temperature'] < 200) {
             $keywordAry[] = 'cold';
         }
 
         if ($planetData['period'] > 10) {
             $keywordAry[] = 'fast';
-        } elseif ($planetData['period'] < 0.5) {
+        } elseif ($planetData['period'] != NULL && $planetData['period'] < 0.5) {
             $keywordAry[] = 'slow';
         }
 
         //距離判定
         if ($planetData['distance_light_year'] > 1000) {
             $keywordAry[] = 'far';
-        } elseif ($planetData['distance_light_year'] < 50 || $planetData['semi_major_axis'] < 0.1) {
+        } elseif (( $planetData['distance_light_year'] != NULL && $planetData['distance_light_year'] < 50 ) || ($planetData['semi_major_axis'] != NULL && $planetData['semi_major_axis'] < 0.1) ) {
             $keywordAry[] = 'close';
         }
 
         //質量判定
         if ($planetData['mass'] > 10 ) {
             $keywordAry[] = 'heavy';
-        } elseif ($planetData['mass'] < 0.3 ){
+        } elseif ($planetData['mass'] != NULL && $planetData['mass'] < 0.3 ){
             $keywordAry[] = 'light';
         }
 
@@ -328,7 +343,7 @@ class Planets
             'heavy' => [
                     "這顆星球擁有令人窒息的引力，連光線經過時都會微微彎曲",
                     "大氣被自身的重量壓成了如液體般的濃稠感，每一步都踏在厚實的時空褶皺上",
-                    "這是一個無比沉穩的世界，巨大的質量讓它成為了星系中不可撼動的錨點"
+                    "一個無比沉穩的世界，巨大的質量讓它成為了星系中不可撼動的錨點"
             ],
             'light' => [
                     "這裡的引力微弱得如同夢境，一陣強風彷彿就能將地表的沙塵吹向宇宙",
@@ -530,21 +545,24 @@ class Planets
         $stmt->execute([$rpgType]);
         return $stmt->fetch();
     }
-    
 
-    
+
     /**
-     * 計算抵達時間
-     * 距離光年*10分鐘
+     * 行星抵達時間
      */
     public function calculateArrivalTime($distanceLy)
     {
-        // 最少10分鐘，最多60分鐘
-        $minutes = min(max(round($distanceLy * 10), 10), 60);
-        
-        $arrivalTime = new DateTime();
+
+        // 最少1分鐘，最多90分鐘
+        $minutes = min(max(round($distanceLy * 10), 1), 90);
+
+        $arrivalTime = new \DateTime();
+
         $arrivalTime->modify("+{$minutes} minutes");
-        
+
         return $arrivalTime->format('Y-m-d H:i:s');
+
     }
+    
+
 }

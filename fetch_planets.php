@@ -91,20 +91,20 @@ function fetchPlanetsFromAPI($apiKey, $params)
 
 // 要抓的行星
 $queries = [
-    // ['min_mass' => 0.001, 'max_mass' => 10],
-    // ['min_radius' => 0.01, 'max_radius' => 1],
-    // ['max_mass' => 15, 'max_radius' => 10],
-    //  ['min_distance_light_year ' => 1000],
+    // ['min_temperature' => 800],
+    // ['max_temperature' => 199],
+    // ['min_period' => 1, 'max_period' => 50],
+    //  ['min_distance_light_year' => 1, 'max_distance_light_year' => 5000],
     // ['min_radius' => 1.0],
     // ['min_radius' => 1.5],
     
     // 測試高溫
-    // ['max_period' => 0.5],
-    ['min_temperature' => 200, 'max_temperature' => 800, 'mass'>10],
+    ['max_period' => 0.4],
+    // ['min_temperature' => 200, 'max_temperature' => 800, 'mass'>10],
     // ['min_temperature' => 1500],
     
     // 測試組合
-    // ['min_radius' => 0.3, 'max_mass' => 0.1],   //智慧
+    // ['min_mas' => 0.001, 'max_mass' => 50],   
 ];
 
 $allPlanets = [];

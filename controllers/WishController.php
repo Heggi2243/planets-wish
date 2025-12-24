@@ -36,14 +36,34 @@ class WishController extends BaseController
      */
     public function index()
     {
+         // 檢查是否已登入
+        if (!isset($_SESSION['user_id'])) {
+            header('Location: /planets-wish/auth/login');
+            exit;
+        }
+
         $userId = $_SESSION['user_id'];
-        
-        // 檢查今日是否已召喚
+
+        // 檢查今天是否已許願
         $hasWishedToday = $this->userModel->hasUsedDailySummon($userId);
-        
+
+        // 取得最新的願望(用於倒數計時)
+        $latestWish = null;
+        if ($hasWishedToday) {
+            $latestWish = $this->wishModel->getLatestTodayWish($userId);
+        }
+
+        // 取得成功/錯誤訊息: 來自store()
+        $successMessage = $_SESSION['success_message'] ?? null;
+        $errorMessage = $_SESSION['error_message'] ?? null;
+        unset($_SESSION['success_message'], $_SESSION['error_message']);
+
         $this->view('wish/index', [
             'pageTitle' => 'Planets-Wish | 航空站',
-            'hasWishedToday' => $hasWishedToday
+            'hasWishedToday' => $hasWishedToday,
+            'latestWish' => $latestWish,
+            'successMessage' => $successMessage,
+            'errorMessage' => $errorMessage
         ]);
     }
 
@@ -56,6 +76,8 @@ class WishController extends BaseController
         $showPlanet = isset($_GET['summon']) && $_GET['summon'] === 'true';
         
         $planetData = null;
+
+        $categoryImg = '';
         
         if ($showPlanet) {
             // 隨機召喚行星
@@ -81,7 +103,7 @@ class WishController extends BaseController
      */
     public function store()
     {
-        // 檢查是否有召喚的行星
+        // 防呆
         if (!isset($_SESSION['current_planet'])) {
             return $this->json([
                 'success' => false,
@@ -93,10 +115,10 @@ class WishController extends BaseController
         $wishContent = $input['wish_content'] ?? '';
 
         // 驗證許願內容
-        if (empty($wishContent) || mb_strlen($wishContent) > 200) {
+        if (empty($wishContent) || mb_strlen($wishContent) > 300) {
             return $this->json([
                 'success' => false,
-                'message' => '願望內容必須在 1-200 字之間'
+                'message' => '星願內容必須在1-300字之間'
             ], 400);
         }
 
@@ -104,30 +126,33 @@ class WishController extends BaseController
         $planetData = $_SESSION['current_planet'];
 
         try {
-            // 計算抵達時間（根據距離）
+            // 根據光年計算抵達時間
             $distance = (float) $planetData['distance_ly'];
-            $arrivalAt = $this->calculateArrivalTime($distance);
+            $arrivalAt = $this->planetModel->calculateArrivalTime($distance);
 
             // 建立許願紀錄
             $wishId = $this->wishModel->create(
-                $userId,
-                $planetData['id'],
-                $wishContent,
-                $arrivalAt
+                $userId,                    
+                $planetData['id'],          
+                $wishContent,               
+                $arrivalAt,               
+                $planetData['rpg_type'] 
             );
 
-            if ($wishId) {
-                // 更新每日召喚日期
+             if ($wishId) {
+                // 7. 更新每日召喚日期
                 $this->userModel->updateDailySummonDate($userId);
 
-                // 清除 Session
+                // 8. 清除當前行星
                 unset($_SESSION['current_planet']);
 
+                // 9. 回傳成功（前端會重導向到 /wish）
                 return $this->json([
                     'success' => true,
-                    'message' => '願望已送出！行星正在前往的路上...',
+                    'message' => '願望已送出！行星正在前來的路上...',
                     'wish_id' => $wishId,
-                    'arrival_at' => $arrivalAt
+                    'arrival_at' => $arrivalAt,
+                    'planet_name' => $planetData['name']
                 ]);
             } else {
                 return $this->json([
@@ -135,6 +160,7 @@ class WishController extends BaseController
                     'message' => '許願失敗，請稍後再試'
                 ], 500);
             }
+
         } catch (\Exception $e) {
             error_log("許願失敗: " . $e->getMessage());
             return $this->json([
@@ -211,14 +237,5 @@ class WishController extends BaseController
         return $planet;
     }
 
-    /**
-     * 計算行星抵達時間
-     */
-    private function calculateArrivalTime($distanceLightYears)
-    {
-        // 簡化計算：1光年 = 1分鐘
-        $minutes = (int) ($distanceLightYears * 1);
-        
-        return date('Y-m-d H:i:s', strtotime("+{$minutes} minutes"));
-    }
+    
 }
