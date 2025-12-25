@@ -63,7 +63,7 @@ async function handleLogin(e) {
             throw new Error('伺服器回應不是JSON格式');
         }
 
-        const result = JSON.parse(responseText);
+        const result = await response.json();
 
         if (result.success) {
             // 不能直接訪問/views/wish/index.php，會繞過路由導致wishController變數傳不到view
@@ -258,7 +258,7 @@ async function resendVerificationEmail(email) {
             body: JSON.stringify({ email })
         });
         
-        const result = JSON.parse(responseText);
+        const result = await response.json();
         
         messageEl.textContent = result.message;
         messageEl.className = result.success ? 
