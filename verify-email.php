@@ -9,6 +9,8 @@ require_once __DIR__ . '/config/config.php';
 require_once __DIR__ . '/config/Database.php';
 require_once __DIR__ . '/models/Users.php';
 
+use models\Users;
+
 $token = $_GET['token'] ?? '';
 $message = '';
 $success = false;
@@ -64,7 +66,7 @@ $pageContent = function() use ($success, $message, $username, $alreadyVerified) 
                 </br>
             </div>
             
-            <a href="/views/auth/index.php" class="btn-primary-gradient">
+            <a href="/planets-wish/auth" class="btn-primary-gradient">
                 前往登入
             </a>
 

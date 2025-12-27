@@ -13,36 +13,28 @@ class Wishes
     }
     
     /**
-     * 建立新的許願紀錄並且計算成功/失敗
+     * 建立 traveling 狀態的許願紀錄（還沒填寫願望內容，也還沒計算抵達時間）
+     * 
+     * @param int $userId 用戶 ID
+     * @param int $planetId 行星 ID
+     * @return int|false 新增的wish_id
      */
-    public function create($userId, $planetId, $wishContent, $arrivalAt, $rpgType)
+    public function createTravelingWish($userId, $planetId)
     {
-        // 判斷許願內容是否符合行星類型
-        $isSuccess = $this->checkWishSuccess($wishContent, $rpgType);
-
-        // 決定最終狀態（但使用者要等到 arrival_at 才能看到）
-        $finalStatus = $isSuccess ? 'arrived' : 'failed';
-
-         $sql = "INSERT INTO wishes (
+        $sql = "INSERT INTO wishes (
                     user_id, 
                     planet_id, 
-                    wish_content, 
+                    wish_content,
                     arrival_at,
-                    status,
                     is_success,
                     created_at
-                ) VALUES (?, ?, ?, ?, ?, ?, NOW())";
-        
+                ) VALUES (?, ?, 'NULL', NULL, 0, NOW())";
         
         $stmt = $this->db->prepare($sql);
         
         $result = $stmt->execute([
             $userId,
-            $planetId,
-            $wishContent,
-            $arrivalAt,
-            $finalStatus,      // 提前存入最終狀態
-            $isSuccess         // 提前存入是否成功
+            $planetId
         ]);
         
         if ($result) {
@@ -50,6 +42,38 @@ class Wishes
         }
         
         return false;
+    }
+    
+    /**
+     * 更新許願內容、抵達時間並計算成功/失敗
+     * 
+     * @param int $wishId 許願ID
+     * @param string $wishContent 願望內容
+     * @param string $arrivalAt 預計抵達時間
+     * @param string $rpgType 行星屬性類型
+     * @return bool 是否成功
+     */
+    public function updateWishContent($wishId, $wishContent, $arrivalAt, $rpgType)
+    {
+        // 計算成功/失敗
+        $isSuccess = $this->checkWishSuccess($wishContent, $rpgType);
+        
+        $sql = "UPDATE wishes 
+                SET wish_content = ?, 
+                    arrival_at = ?,
+                    status = ?, 
+                    is_success = ?
+                WHERE id = ?";
+        
+        $stmt = $this->db->prepare($sql);
+        
+        return $stmt->execute([
+            $wishContent,
+            $arrivalAt,
+            'traveling',
+            $isSuccess,
+            $wishId
+        ]);
     }
 
     /**
@@ -106,22 +130,37 @@ class Wishes
         return $stmt->fetch();
     }
 
+    /**
+     * 更新願望狀態
+     * 
+     * @param int $wishId 願望 ID
+     * @param string $status新狀態 (summoned, traveling, arrived, checked)
+     * @return bool 是否成功
+     */
+    public function updateStatus($wishId, $status)
+    {
+        $sql = "UPDATE wishes SET status = ? WHERE id = ?";
+        
+        $stmt = $this->db->prepare($sql);
+        return $stmt->execute([$status, $wishId]);
+    }
+
 
     /**
-     * 取得會員的所有許願紀錄
+     * 取得會員的所有許願紀錄 (wish/record.php)
      */
-    // public function getUserWishes($userId)
-    // {
-    //     $sql = "SELECT w.*, p.name as planet_name, p.rpg_type, p.distance_ly
-    //             FROM wishes w
-    //             JOIN planets p ON w.planet_id = p.id
-    //             WHERE w.user_id = ?
-    //             ORDER BY w.created_at DESC";
+    public function getUserWishes($userId)
+    {
+        $sql = "SELECT w.*, p.name as planet_name, p.rpg_type, p.distance_ly
+                FROM wishes w
+                JOIN planets p ON w.planet_id = p.id
+                WHERE w.user_id = ? 
+                ORDER BY w.created_at DESC";
         
-    //     $stmt = $this->db->prepare($sql);
-    //     $stmt->execute([$userId]);
-    //     return $stmt->fetchAll();
-    // }
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([$userId]);
+        return $stmt->fetchAll();
+    }
     
     /**
      * 根據 ID 取得許願紀錄

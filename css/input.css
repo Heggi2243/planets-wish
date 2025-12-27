@@ -6,7 +6,7 @@ body {
     background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
     overflow-x: hidden;
     min-height: 100vh;
-    font-family: Orbitron, sans-serif;
+    font-family: 'Orbitron', sans-serif;
 }
 
 /* 生成星空背景 */
@@ -156,6 +156,12 @@ body {
         opacity: 1;
     }
 }
+
+@keyframes twinkle {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 1; }
+}
+
 
 /* 藍色按鈕 */
 

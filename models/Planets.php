@@ -525,12 +525,33 @@ class Planets
         return $stmt->fetchAll();
     }
     
+
     /**
      * 隨機取得一顆行星
      */
-    public function getRandom()
+    public function getRandom($user_id = null)
     {
-        $stmt = $this->db->query("SELECT * FROM planets ORDER BY RAND() LIMIT 1");
+        $params = [];
+        $sql = "SELECT p.* FROM planets p";
+
+        // 如果有帶入 user_id，加上排除邏輯
+        if ($user_id !== null) {
+            // 排除掉"該玩家已經擁有且狀態為成功 (is_success = 1)"的行星
+            // 如果is_success=0，NOT EXISTS會判定為「不存在成功的紀錄」，因此該行星仍有機率被選中
+            $sql .= " WHERE NOT EXISTS (
+                        SELECT 1 FROM wishes w 
+                        WHERE w.planet_id = p.id 
+                        AND w.user_id = ? 
+                        AND w.is_success = 1
+                    )";
+            $params[] = $user_id;
+        }
+
+        $sql .= " ORDER BY RAND() LIMIT 1";
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute($params);
+        
         return $stmt->fetch();
     }
     

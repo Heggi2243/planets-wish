@@ -38,7 +38,9 @@ $routes = [
     'GET:/wish' => ['WishController', 'index'],
     'GET:/wish/create' => ['WishController', 'create'],
     'POST:/wish/store' => ['WishController', 'store'],  // ← 改成 /wish/store
+    'GET:/wish/result' => ['WishController', 'result'],
     'GET:/wish/record' => ['WishController', 'record'],
+    
 ];
 
 // 路由匹配
