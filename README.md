@@ -12,7 +12,8 @@
 
 ## 🎲 判定系統
 
-![getPlanet](https://github.com/user-attachments/assets/203215cf-3338-4ad9-bf58-a5af42e42638)
+![getRandom](https://github.com/user-attachments/assets/cdb99029-0db0-4f75-bae0-69402438935a)
+
 
 ### RPG屬性計算
 行星的RPG屬性根據真實天文數據計算：
