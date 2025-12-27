@@ -2,53 +2,85 @@
 
 # Planets-Wish (星願) 🌟
 
-一個結合天文資料與RPG遊戲機制的許願收集遊戲，使用PHP+MySQL開發。
+使用PHP+MySQL開發。一個結合天文資料與許願機制的互動式網頁應用，讓使用者透過召喚真實行星來許願，並透過RPG屬性系統判定願望成功率。
 
-## 📖 專案簡介
+## 📖 特色功能
+- 透過API Ninjas取得真實系外行星資料
+- 每個行星都有獨特的溫度、距離、質量等天文屬性
+- 根據行星特性自動生成RPG屬性(力量、敏捷、幸運、智慧)
 
-所有行星皆為真實數據(使用API Ninjas - Planets API)，玩家可以透過許願的方式召喚宇宙中的行星。
-當行星的屬性與你的願望產生共鳴時，你就能成功收集該行星！
+## 🎲 判定系統
+
+### RPG屬性計算
+行星的RPG屬性根據真實天文數據計算：
+- **力量** = f(質量)：行星質量越大，力量越高
+- **敏捷** = f(公轉週期)：公轉週期越短，敏捷越高
+- **幸運** = f(溫度)：溫度相關的隨機屬性
+- **智慧** = f(半徑)：行星半徑越大，智慧越高
+
+### 許願關鍵字匹配
+- 使用者許願內容會與行星屬性進行關鍵字匹配
+- 力量型行星：適合「健康」「理想」「突破」等願望
+- 敏捷型行星：適合「感情」「生活」「關係」等願望
+- 幸運型行星：適合「運勢」「財富」「驚喜」等願望
+- 智慧型行星：適合「學習」「考試」「事業」等願望
+- 匹配成功率提升，否則基礎成功率30%
+
+## ⏱️ 倒數計時機制
+- 根據行星距離(光年)計算抵達時間
+- 實時倒數計時顯示
+- 倒數結束後自動刷新頁面，顯示召喚結果
 
 
-## 🧩 核心玩法
+## 🎨 星種蒐集系統
+- 28種不同的行星圖片類型
+- 展示櫃：玩家可查看已蒐集的星種
+- 蒐集進度條：顯示蒐集完成度
 
-- 🌍 **行星召喚**：每天可進行免費召喚，使用道具可額外召喚
-- ✨ **許願系統**：輸入你的願望，系統會分析願望屬性
-- 🎯 **屬性匹配**：行星的 RPG 屬性與願望呼應時即可成功收集
+## 📧 Email驗證系統
+- 使用PHPMailer發送驗證信
+- 重新發送驗證信功能
+- Token24小時過期機制
+
+## 🎮 每日召喚限制
+- 每位使用者每天只能免費召喚一次行星
+- 召喚後即存入資料庫，避免重新整理刷新
+
 
 ## 🛠️ 技術棧
-
 - **後端**：PHP 8
 - **資料庫**：MySQL 8
-- **架構**：MVC 模式
+- **架構**：MVC
 - **外部 API**：[API Ninjas - Planets API](https://api-ninjas.com/api/planets)
 - **CSS 框架**：Tailwind CSS
-- **其他工具**： PHPMailer
+- **其他工具**： PHPMailer、API Ninjas - Planets API
+
 
 ## 📁 專案結構
-
 ```
 planets-wish/
 ├── config/
 │   ├── config.php         # 配置檔案    
 │   ├── Database.php       # 資料庫連線類別
 ├── controllers/           # 控制器
-│   ├── AuthController.php
+│   ├── AuthController.php # 登入/註冊
 │   ├── BaseController.php # 基礎控制器 
 │   ├── HomeController.php # 首頁控制器
-│   └── WishController.php
+│   └── WishController.php # 許願控制器
 ├── models/               # 模型
 │   ├── Inventory.php     # 背包(玩家持有道具)
-│   ├── Items.php         # 商店商品
+│   ├── Items.php         # 商店
 │   ├── Planets.php       # 行星
 │   ├── Users.php         # 會員
-│   └── Wish.php          # 許願紀錄
+│   └── Wish.php          # 許願
 ├── views/                # 視圖
 │   ├── auth/             # 登入/註冊
 │   └── wish/             # 許願相關頁面
 ├── css/
 │   └── input.css
 ├── js/
+│   ├── auth.js           # 登入/註冊處理
+│   └── verify-email.js   # email驗證
 ├── layouts/              # 版面設置
 ├── services/
 │   └── EmailService.php  # Email驗證信
@@ -58,10 +90,11 @@ planets-wish/
 │   └── composer/
 │   └── phpmailer/
 │   └── autoload.php
-├── index.php             # 入口檔案
+├── index.php             # 路由
 ├── .env                  # 環境變數
 └── .gitignore
 └── verify-email.php      # Email驗證頁面
+└── fetch_planets.php     # 使用API抓取行星資料
 ```
 
 ## 🗄️ 資料庫結構
@@ -131,41 +164,19 @@ planets-wish/
 | id | INT | 主鍵 |
 | user_id | INT | 使用者 ID |
 | planet_id | INT | 行星 ID |
-| wish_type | ENUM | 許願類型(健康/事業/財富/感情) |
 | wish_content | TEXT | 許願內容 |
-| status | ENUM | 狀態（traveling/arrived/failed） |
+| status | ENUM | 狀態(traveling/arrived/failed) |
 | created_at | DATETIME | 召喚時間 |
 | arrival_at | DATETIME | 預計抵達時間 |
 | is_success | TINYINT | 是否成功收集 |
 
-## 🎮 遊戲機制
 
-### RPG 屬性計算
-
-行星的 RPG 屬性根據真實天文數據計算：
-
-- **力量** = f(質量)：行星質量越大，力量越高
-- **敏捷** = f(公轉週期)：公轉週期越短，敏捷越高
-- **幸運** = f(溫度)：溫度相關的隨機屬性
-- **智慧** = f(半徑)：行星半徑越大，智慧越高
-
-每個屬性值為 0-3 分，四項屬性總和為 1-8 分。
-
-### 行星抵達時間
-
-行星的抵達時間根據距離計算：
-- 計算公式：`距離(光年) × 10 分鐘`
-- 最短：10 分鐘
-- 最長：60 分鐘
-
-## 🚀 安裝與設定
-
-### 環境需求
+## 🚀 環境需求
 
 - PHP 8.0 或以上
 - MySQL 8.0 或以上
 - Composer（選用）
-- cURL 擴展（用於 API 請求）
+- cURL擴展（用於 API 請求）
 
 ## 功能展示
 - Email驗證：
@@ -179,9 +190,9 @@ planets-wish/
 - [x] RPG 屬性計算邏輯
 - [x] phpmailer信箱驗證
 - [x] 使用者註冊/登入
-- [ ] 許願系統
-- [ ] 屬性匹配演算法
-- [ ] 收集紀錄展示
+- [x] 許願系統
+- [x] 屬性匹配演算法
+- [x] 收集紀錄展示
 
 
 ## 🚀 未來展望
