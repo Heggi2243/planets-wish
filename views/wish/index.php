@@ -177,60 +177,73 @@ $pageContent = function() use ($hasWishedToday, $latestWish, $successMessage, $e
     </div>
     
     <script>
-    //點傳送門時顯示提示框
-    document.getElementById('summon-btn')?.addEventListener('click', function() {
-        document.getElementById('daily-limit-modal').classList.remove('hidden');
-    });
-    
-    // 點「我知道了」關閉提示框
-    document.getElementById('close-modal-btn')?.addEventListener('click', function() {
-        document.getElementById('daily-limit-modal').classList.add('hidden');
-    });
-    </script>
-    <?php endif; ?>
-
-    <!-- 倒數計時 JavaScript -->
-    <?php if ($hasWishedToday && $latestWish && $latestWish['arrival_at']): ?>
-    <script>
-    (function() {
-        const countdownEl = document.getElementById('countdown');
-        
-        if (!countdownEl) return;
-        
-        const arrivalTime = new Date(countdownEl.dataset.arrival).getTime();
-        const wishStatus = '<?= $latestWish['status'] ?? '' ?>';  // 取得status
-        
-        function updateCountdown() {
-            const now = new Date().getTime();
-            const distance = arrivalTime - now;
+        document.addEventListener('DOMContentLoaded', function() {
+            const summonBtn = document.getElementById('summon-btn');
+            const modal = document.getElementById('daily-limit-modal');
+            const closeBtn = document.getElementById('close-modal-btn');
             
-            if (distance < 0) {
-                // 只有在traveling狀態才自動刷新
-                if (wishStatus === 'traveling') {
-                    location.reload();
-                } else {
-                    // 已經查看過了，顯示已抵達
-                    countdownEl.innerHTML = '<span class="text-white">✨ 已抵達</span>';
-                    clearInterval(interval);
-                }
-                return;
+            // 點擊傳送門:顯示提示
+            summonBtn?.addEventListener('click', function() {
+                modal.classList.remove('hidden');
+                document.body.style.overflow = 'hidden';
+            });
+            
+            // 關閉Modal
+            function closeModal() {
+                modal.classList.add('hidden');
+                document.body.style.overflow = '';
             }
             
-            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+            closeBtn?.addEventListener('click', closeModal);
+            modal?.addEventListener('click', function(e) {
+                if (e.target === modal) closeModal();
+            });
+        });
+        </script>
+
+        <?php endif; ?>
+
+        <?php if ($hasWishedToday && $latestWish && $latestWish['arrival_at']): ?>
+        <script>
+        (function() {
+            const countdownEl = document.getElementById('countdown');
             
-            let timeStr = '';
-            if (days > 0) timeStr += `${days}天 `;
-            timeStr += `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            if (!countdownEl) return;
             
-            countdownEl.textContent = timeStr;
-        }
-        
-        updateCountdown();
-        const interval = setInterval(updateCountdown, 1000);
-    })();
+            const arrivalTime = new Date(countdownEl.dataset.arrival).getTime();
+            const wishStatus = '<?= $latestWish['status'] ?? '' ?>';  // 取得status
+            
+            function updateCountdown() {
+                const now = new Date().getTime();
+                const distance = arrivalTime - now;
+                
+                if (distance < 0) {
+                    // 只有在traveling狀態才自動刷新
+                    if (wishStatus === 'traveling') {
+                        location.reload();
+                    } else {
+                        // 已經查看過了，顯示已抵達
+                        countdownEl.innerHTML = '<span class="text-white">✨ 已抵達</span>';
+                        clearInterval(interval);
+                    }
+                    return;
+                }
+                
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                
+                let timeStr = '';
+                if (days > 0) timeStr += `${days}天 `;
+                timeStr += `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                
+                countdownEl.textContent = timeStr;
+            }
+            
+            updateCountdown();
+            const interval = setInterval(updateCountdown, 1000);
+        })();
     </script>
     <?php endif; ?>
 <?php

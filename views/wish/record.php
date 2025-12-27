@@ -83,7 +83,6 @@ $pageContent = function() use ($wishes, $collectedCount, $totalTypes, $collected
             <div id="wishes-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <?php if (empty($wishes)): ?>
                     <div class="col-span-full text-center py-20 bg-white/5 border border-white/10 rounded-3xl backdrop-blur-md">
-                        <div class="text-5xl mb-4">✨</div>
                         <p class="text-white">還沒有許願紀錄，快去召喚行星吧！</p>
                         <a href="/planets-wish/wish" class="mt-6 inline-block btn-primary-gradient">
                             前往許願
@@ -110,8 +109,8 @@ $pageContent = function() use ($wishes, $collectedCount, $totalTypes, $collected
                             ],
                             'success' => [
                                 'label' => '蒐集成功',
-                                'color' => 'text-cyan-400',
-                                'dot' => 'bg-cyan-400',
+                                'color' => 'text-purple-400',
+                                'dot' => 'bg-purple-400',
                                 'border' => 'from-green-400 to-emerald-500',
                                 'glow' => 'hover:shadow-[0_0_30px_rgba(74,222,128,0.3)]'
                             ],
@@ -178,7 +177,6 @@ $pageContent = function() use ($wishes, $collectedCount, $totalTypes, $collected
             
             <!-- Empty State -->
             <div id="empty-state" class="hidden text-center py-20 bg-white/5 border border-white/10 rounded-3xl backdrop-blur-md">
-                <div class="text-5xl mb-4">✨</div>
                 <p class="text-white">目前沒有對應狀態的星願。</p>
             </div>
         </main>
@@ -302,7 +300,7 @@ $pageContent = function() use ($wishes, $collectedCount, $totalTypes, $collected
         document.getElementById('modal-text').textContent = wish.wish_content || '尚未填寫願望';
         
         if (wish.arrival_at) {
-            document.getElementById('modal-arrival').textContent = `預計抵達：${wish.arrival_at}`;
+            document.getElementById('modal-arrival').textContent = `抵達時間：${wish.arrival_at}`;
         } else {
             document.getElementById('modal-arrival').textContent = '';
         }
