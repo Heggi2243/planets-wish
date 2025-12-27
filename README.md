@@ -18,6 +18,8 @@
 - **幸運** = f(溫度)：溫度相關的隨機屬性
 - **智慧** = f(半徑)：行星半徑越大，智慧越高
 
+<img width="1890" height="877" alt="image" src="https://github.com/user-attachments/assets/a03e6012-036c-4018-b6e9-845115b68241" />
+
 ### 許願關鍵字匹配
 - 使用者許願內容會與行星屬性進行關鍵字匹配
 - 力量型行星：適合「健康」「理想」「突破」等願望
@@ -199,3 +201,8 @@ planets-wish/
 
 - 💰 **金幣系統**：收集行星獲得金幣，可購買道具
 - 🎒 **道具系統**：使用道具增加召喚次數或指定行星屬性
+
+## 📄 版權聲明 (Copyright & License)
+- 本專案僅供閱覽、學習與技術交流參考，未開放任何形式的授權。
+- 未經作者許可，禁止複製、修改、分發或用於任何商業用途。
+- All rights reserved. This project is for viewing and educational purposes only. No reuse or redistribution is permitted.
