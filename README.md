@@ -19,6 +19,7 @@
 - **智慧** = f(半徑)：行星半徑越大，智慧越高
 
 <img width="1890" height="877" alt="image" src="https://github.com/user-attachments/assets/a03e6012-036c-4018-b6e9-845115b68241" />
+
 ### 許願關鍵字匹配
 - 使用者許願內容會與行星屬性進行關鍵字匹配
 - 力量型行星：適合「健康」「理想」「突破」等願望
