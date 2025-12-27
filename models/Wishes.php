@@ -151,7 +151,7 @@ class Wishes
      */
     public function getUserWishes($userId)
     {
-        $sql = "SELECT w.*, p.name as planet_name, p.rpg_type, p.distance_ly
+        $sql = "SELECT w.*, p.name as planet_name, p.rpg_type, p.distance_ly, p.keywords
                 FROM wishes w
                 JOIN planets p ON w.planet_id = p.id
                 WHERE w.user_id = ? 

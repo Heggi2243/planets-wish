@@ -5,7 +5,7 @@
 
 $pageTitle = 'Planets-Wish | 星願紀錄';
 
-$pageContent = function() use ($wishes) {
+$pageContent = function() use ($wishes, $collectedCount, $totalTypes, $collectedTypes) {
 ?>
 <div class="min-h-screen relative">
     <!-- 星星背景 -->
@@ -14,13 +14,52 @@ $pageContent = function() use ($wishes) {
     <div class="relative z-10 container mx-auto px-4 py-8">
         <!-- Header -->
         <header class="text-center mb-8">
-            <h1 class="text-4xl md:text-5xl font-orbitron text-transparent bg-clip-text bg-cyan-400 mb-4">
-                星願紀錄
-            </h1>
-            <p class="text-white">你與宇宙的每次對話</p>
+            
+            <!-- 回首頁 -->
+            <a href="/planets-wish/wish" 
+               class="absolute top-0 left-0 group flex items-center gap-2 glass-panel rounded-xl px-4 py-2 
+                      border border-white/30 hover:border-cyan-400 transition-all duration-300
+                      hover:shadow-[0_0_20px_rgba(34,211,238,0.5)]">
+                <svg xmlns="http://www.w3.org/2000/svg" 
+                     class="w-5 h-5 text-white group-hover:text-cyan-400 transition-colors" 
+                     fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+                <span class="text-white text-sm font-orbitron group-hover:text-cyan-400 transition-colors">
+                    返回首頁
+                </span>
+            </a>
+
+            <div class="absolute top-0 right-0 glass-panel rounded-xl px-4 py-2">
+                <div class="flex items-center gap-2">
+                    <span class="text-cyan-400">星種蒐集</span>
+                    <span class="text-white font-bold"><?= $collectedCount ?> / <?= $totalTypes ?></span>
+                </div>
+                <!-- 進度條 -->
+                <div class="bg-gray-700 rounded-full h-2">
+                    <div class="bg-gradient-to-r from-cyan-400 to-purple-400 h-2 rounded-full" 
+                        style="width: <?= round(($collectedCount / $totalTypes) * 100) ?>%"></div>
+                </div>
+            </div>
+
+            <?php if ($collectedCount >= 1): ?>
+            <div class="rounded-2xl p-4">
+                <div class="grid grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-4">
+                    <?php foreach ($collectedTypes as $type): ?>
+                        <div class="group relative">
+                            <!-- 圓形行星圖片 -->
+                            <div class="w-24 h-24 rounded-full animate-float hover:scale-110">
+                                <img class="drop-shadow-xl group-hover:scale-110"
+                                     src="../../img/planet_<?= $type ?>.png" />
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+            <?php endif; ?>
 
             <!-- Filter Tabs -->
-            <div class="flex flex-wrap justify-center gap-3 mt-8 mb-12">
+            <div class="flex flex-wrap justify-center gap-3 mt-4 mb-12">
                 <button data-filter="all" class="filter-btn active px-4 py-2 rounded-xl border border-white/40 bg-white/20 text-white shadow-lg scale-105 transition-all">
                     全部紀錄
                 </button>

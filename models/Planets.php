@@ -145,6 +145,52 @@ class Planets
             return 'wormhole';
     }
 
+    /**
+     * 取得所有可能的行星圖片類型(目前先用這樣的方法)
+     * 
+     * @return array 所有星種類型
+     */
+    public function getAllPlanetTypes()
+    {
+        return [
+            // 四重組合
+            'cold_fast_far_light',
+            
+            // 三重組合
+            'cold_close_light',
+            'cold_fast_close',
+            'hot_slow_close_light',
+            'hot_slow_close',
+            
+            // 雙重組合
+            'slow_far',
+            'hot_light',
+            'hot_close',
+            'hot_heavy',
+            'hot_far',
+            'cold_heavy',
+            'cold_close',
+            'cold_fast',
+            'fast_far',
+            'far_light',
+            'slow_heavy',
+            'slow_cold',
+            'slow_close',
+            'fast_close',
+            
+            // 單一關鍵字
+            'hot',
+            'cold',
+            'fast',
+            'slow',
+            'far',
+            'close',
+            'heavy',
+            'light'
+        ];
+    }
+
+
      /**
      * 根據API資料計算RPG屬性、拼接description、suggestion欄位內容
      */

@@ -277,10 +277,31 @@ class WishController extends BaseController
         
         // 取得所有許願紀錄
         $wishes = $this->wishModel->getUserWishes($userId);
+
+        // 取得所有可能的星種類型
+        $allPlanetTypes = $this->planetModel->getAllPlanetTypes();
+
+        // 取得玩家已蒐集的星種(去重複)
+        $collectedTypes = [];
+        foreach ($wishes as $wish) {
+            if ($wish['status'] === 'checked' && !empty($wish['keywords'])) {
+                $categoryImg = $this->planetModel->getCategoryByKeywords($wish['keywords']);
+                if ($categoryImg && $categoryImg !== 'wormhole' && !in_array($categoryImg, $collectedTypes)) {
+                    $collectedTypes[] = $categoryImg;
+                }
+            }
+        }
+
+        $totalTypes = count($allPlanetTypes);
+        $collectedCount = count($collectedTypes);
         
         $this->view('wish/record', [
             'pageTitle' => 'Planets-Wish | 許願紀錄',
-            'wishes' => $wishes
+            'wishes' => $wishes,
+            'allPlanetTypes' => $allPlanetTypes,
+            'collectedTypes' => $collectedTypes,
+            'totalTypes' => $totalTypes,
+            'collectedCount' => $collectedCount
         ]);
     }
 

@@ -88,7 +88,7 @@ $pageContent = function() use ($hasWishedToday, $latestWish, $successMessage, $e
                     group-hover:-translate-y-2"
             />
         </div>
-        <span class="mt-4 text-white font-orbitron text-sm md:text-lg tracking-widest
+        <span class="mt-4 text-white font-orbitron text-sm tracking-widest
                  opacity-0 transform translate-y-4 transition-all duration-300 ease-out
                  group-hover:opacity-100 group-hover:translate-y-0">
             星願紀錄
