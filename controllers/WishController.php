@@ -284,7 +284,7 @@ class WishController extends BaseController
         // 取得玩家已蒐集的星種(去重複)
         $collectedTypes = [];
         foreach ($wishes as $wish) {
-            if ($wish['status'] === 'checked' && !empty($wish['keywords'])) {
+            if ($wish['status'] === 'checked' && $wish['is_success'] === 1 && !empty($wish['keywords'])) {
                 $categoryImg = $this->planetModel->getCategoryByKeywords($wish['keywords']);
                 if ($categoryImg && $categoryImg !== 'wormhole' && !in_array($categoryImg, $collectedTypes)) {
                     $collectedTypes[] = $categoryImg;

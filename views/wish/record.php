@@ -44,7 +44,7 @@ $pageContent = function() use ($wishes, $collectedCount, $totalTypes, $collected
 
             <?php if ($collectedCount >= 1): ?>
             <div class="rounded-2xl p-4">
-                <div class="grid grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-4">
+                <div class="grid grid-cols-4 md:grid-cols-6 lg:grid-cols-9 gap-4">
                     <?php foreach ($collectedTypes as $type): ?>
                         <div class="group relative">
                             <!-- 圓形行星圖片 -->
@@ -230,7 +230,7 @@ $pageContent = function() use ($wishes, $collectedCount, $totalTypes, $collected
         starContainer.appendChild(star);
     }
 
-    // ✅ 篩選功能（新邏輯）
+    // 篩選功能
     document.querySelectorAll('.filter-btn').forEach(btn => {
         btn.addEventListener('click', () => {
             const filter = btn.dataset.filter;
@@ -243,7 +243,7 @@ $pageContent = function() use ($wishes, $collectedCount, $totalTypes, $collected
             btn.classList.add('bg-white/20', 'border-white/40', 'shadow-lg', 'scale-105', 'active');
             btn.classList.remove('bg-white/5', 'border-white/10');
 
-            // ✅ 篩選卡片（新邏輯）
+            // 篩選卡片
             const cards = document.querySelectorAll('.wish-card');
             const emptyState = document.getElementById('empty-state');
             let visibleCount = 0;

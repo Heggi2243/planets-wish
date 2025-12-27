@@ -1,0 +1,21 @@
+{
+  "name": "planets-wish",
+  "version": "1.0.0",
+  "description": "A web application that combines astronomical data with wish-making mechanics",
+  "main": "index.js",
+  "scripts": {
+    "build": "npx tailwindcss -i ./css/input.css -o ./src/output.css",
+    "watch": "npx tailwindcss -i ./css/input.css -o ./src/output.css --watch",
+    "build:prod": "npx tailwindcss -i ./css/input.css -o ./src/output.css --minify"
+  },
+  "keywords": [
+    "planets",
+    "wish",
+    "astronomy"
+  ],
+  "author": "Heggi",
+  "license": "MIT",
+  "devDependencies": {
+    "tailwindcss": "^3.4.19"
+  }
+}
