@@ -47,6 +47,8 @@
 - 蒐集進度條：顯示蒐集完成度
 
 ## 📧 Email驗證系統
+<img width="1200" height="824" alt="mail google com_mail_u_0__hl=zh-TW" src="https://github.com/user-attachments/assets/1ac32a13-4214-4fdc-a19a-f019a564f5b7" />
+
 - 使用PHPMailer發送驗證信
 - 重新發送驗證信功能
 - Token24小時過期機制
@@ -186,10 +188,6 @@ planets-wish/
 - MySQL 8.0 或以上
 - Composer（選用）
 - cURL擴展（用於 API 請求）
-
-## 功能展示
-- Email驗證：
-<img width="1200" height="824" alt="mail google com_mail_u_0__hl=zh-TW" src="https://github.com/user-attachments/assets/1ac32a13-4214-4fdc-a19a-f019a564f5b7" />
 
 
 ## 📊 開發進度
