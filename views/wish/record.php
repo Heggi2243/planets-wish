@@ -42,20 +42,20 @@ $pageContent = function() use ($wishes, $collectedCount, $totalTypes, $collected
                 </div>
             </div>
 
-            <?php if ($collectedCount >= 1): ?>
-            <div class="rounded-2xl p-4">
-                <div class="grid grid-cols-4 md:grid-cols-6 lg:grid-cols-9 gap-4">
-                    <?php foreach ($collectedTypes as $type): ?>
-                        <div class="group relative">
-                            <!-- 圓形行星圖片 -->
-                            <div class="w-24 h-24 rounded-full animate-float hover:scale-110">
-                                <img class="drop-shadow-xl group-hover:scale-110"
-                                     src="../../img/planet_<?= $type ?>.png" />
+           <?php if ($collectedCount >= 1): ?>
+                <div class="rounded-2xl p-4">
+                    <div class="flex flex-wrap gap-6 justify-center items-center">
+                        <?php foreach ($collectedTypes as $type): ?>
+                            <div class="group relative">
+                                <div class="w-20 h-20 md:w-24 md:h-24 animate-float">
+                                    <img class="w-full h-full object-contain drop-shadow-xl transition-transform duration-300 group-hover:scale-110"
+                                        src="../../img/planet_<?= $type ?>.png" 
+                                        alt="collected planet" />
+                                </div>
                             </div>
-                        </div>
-                    <?php endforeach; ?>
+                        <?php endforeach; ?>
+                    </div>
                 </div>
-            </div>
             <?php endif; ?>
 
             <!-- Filter Tabs -->
