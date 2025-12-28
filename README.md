@@ -14,6 +14,9 @@
 
 ![getRandom](https://github.com/user-attachments/assets/cdb99029-0db0-4f75-bae0-69402438935a)
 
+![Uploading planetArrival.gif…]()
+
+
 
 ### RPG屬性計算
 行星的RPG屬性根據真實天文數據計算：
