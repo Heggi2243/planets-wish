@@ -14,8 +14,7 @@
 
 ![getRandom](https://github.com/user-attachments/assets/cdb99029-0db0-4f75-bae0-69402438935a)
 
-![Uploading planetArrival.gif…]()
-
+![planetArrival](https://github.com/user-attachments/assets/e2fca33f-b8f9-4b85-bdfc-7a1d55dd3574)
 
 
 ### RPG屬性計算
@@ -24,8 +23,6 @@
 - **敏捷** = f(公轉週期)：公轉週期越短，敏捷越高
 - **幸運** = f(溫度)：溫度相關的隨機屬性
 - **智慧** = f(半徑)：行星半徑越大，智慧越高
-
-<img width="1890" height="877" alt="image" src="https://github.com/user-attachments/assets/a03e6012-036c-4018-b6e9-845115b68241" />
 
 ### 許願關鍵字匹配
 - 使用者許願內容會與行星屬性進行關鍵字匹配
