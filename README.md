@@ -64,7 +64,7 @@
 - **架構**：MVC
 - **外部 API**：[API Ninjas - Planets API](https://api-ninjas.com/api/planets)
 - **CSS 框架**：Tailwind CSS
-- **其他工具**： PHPMailer、API Ninjas - Planets API
+- **其他工具**： PHPMailer
 
 
 ## 📁 專案結構
