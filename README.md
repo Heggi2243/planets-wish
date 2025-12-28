@@ -39,6 +39,8 @@
 
 
 ## 🎨 星種蒐集系統
+<img width="1912" height="1074" alt="wish_record" src="https://github.com/user-attachments/assets/d916daff-07a5-4813-b62b-2185d50765ac" />
+
 - 28種不同的行星圖片類型
 - 展示櫃：玩家可查看已蒐集的星種
 - 蒐集進度條：顯示蒐集完成度
