@@ -1,4 +1,5 @@
-![showing](https://github.com/user-attachments/assets/f6d0937f-86f8-4883-bd4b-6e97abac3710)
+<img width="1912" height="904" alt="wish" src="https://github.com/user-attachments/assets/3d1cd8c7-2de9-482f-a82e-5a623aff8d67" />
+
 
 
 # Planets-Wish (星願) 🌟
