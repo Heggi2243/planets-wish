@@ -28,7 +28,7 @@ class Wishes
                     arrival_at,
                     is_success,
                     created_at
-                ) VALUES (?, ?, 'NULL', NULL, 0, NOW())";
+                ) VALUES (?, ?, '(尚未輸入星願)', NULL, 0, NOW())";
         
         $stmt = $this->db->prepare($sql);
         
@@ -162,35 +162,4 @@ class Wishes
         return $stmt->fetchAll();
     }
     
-    /**
-     * 根據 ID 取得許願紀錄
-     */
-    // public function getById($id)
-    // {
-    //     $sql = "SELECT w.*, p.name as planet_name, p.rpg_type, p.distance_ly
-    //             FROM wishes w
-    //             JOIN planets p ON w.planet_id = p.id
-    //             WHERE w.id = ?";
-        
-    //     $stmt = $this->db->prepare($sql);
-    //     $stmt->execute([$id]);
-    //     return $stmt->fetch();
-    // }
-    
-    
-    /**
-     * 取得旅行中的許願
-     */
-    // public function getTravelingWishes($userId)
-    // {
-    //     $sql = "SELECT w.*, p.name as planet_name, p.rpg_type
-    //             FROM wishes w
-    //             JOIN planets p ON w.planet_id = p.id
-    //             WHERE w.user_id = ? AND w.status = 'traveling'
-    //             ORDER BY w.arrival_at ASC";
-        
-    //     $stmt = $this->db->prepare($sql);
-    //     $stmt->execute([$userId]);
-    //     return $stmt->fetchAll();
-    // }
 }

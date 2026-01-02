@@ -100,7 +100,7 @@ $pageContent = function() use ($success, $message, $username, $alreadyVerified) 
                         發送驗證信
                     </button>
                 </form>
-                <p id="resend-message" class="mt-4 text-sm text-cyan-300"></p>
+                <p id="resend-message" class="mt-4 text-sm text-white"></p>
             </div>
         <?php endif; ?>
     </div>

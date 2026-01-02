@@ -35,7 +35,7 @@ async function resendVerification(e) {
         
         message.textContent = result.message;
         message.className = result.success ? 
-            'mt-4 text-sm text-green-400' : 
+            'mt-4 text-sm text-white' : 
             'mt-4 text-sm text-red-400';
             
         if (result.success) {

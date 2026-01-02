@@ -262,7 +262,7 @@ async function resendVerificationEmail(email) {
         
         messageEl.textContent = result.message;
         messageEl.className = result.success ? 
-            'mt-4 text-sm text-green-400' : 
+            'mt-4 text-sm text-white' : 
             'mt-4 text-sm text-red-400';
             
     } catch (error) {
